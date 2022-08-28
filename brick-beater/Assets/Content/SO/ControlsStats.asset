@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: ControlsStats
   m_EditorClassIdentifier: 
   speed: 7
+  maxDelta: 3.6
