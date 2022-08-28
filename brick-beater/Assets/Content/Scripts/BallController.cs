@@ -20,7 +20,7 @@ public class BallController : MonoBehaviour
     {
         setMinimumVelocity();
         setMaximumVelocity();
-        Debug.Log(Vector2.SqrMagnitude(rigidbody.velocity));
+        //Debug.Log(Vector2.SqrMagnitude(rigidbody.velocity));
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -51,7 +51,7 @@ public class BallController : MonoBehaviour
 
     void setMinimumVelocity()
     {
-        if (rigidbody.velocity.y > 0 && rigidbody.velocity.y < 0.35f)
+        if (rigidbody.velocity.y >= 0 && rigidbody.velocity.y < 0.35f)
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, 1f);
         }
@@ -82,7 +82,7 @@ public class BallController : MonoBehaviour
 
     IEnumerator horizontalCheck()
     {
-        Debug.Log($"At: {this}, started horizontalCheck, vel: {rigidbody.velocity}");
+        //Debug.Log($"At: {this}, started horizontalCheck, vel: {rigidbody.velocity}");
         yield return new WaitForSeconds(5f);
 
         if (rigidbody.velocity.x == 0)
@@ -90,7 +90,7 @@ public class BallController : MonoBehaviour
             rigidbody.velocity = new Vector2(Random.Range(-1f, 1f), rigidbody.velocity.y);
         }
 
-        Debug.Log($"At: {this}, ended horizontalCheck, vel: {rigidbody.velocity}");
+        //Debug.Log($"At: {this}, ended horizontalCheck, vel: {rigidbody.velocity}");
     }
 
 
