@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BrickManager : MonoBehaviour
@@ -19,13 +20,12 @@ public class BrickManager : MonoBehaviour
     [SerializeField] private GameObject brickPrefab;
     [SerializeField] private GameObject bricksParent;
 
-    [SerializeField] private float x_Start, y_Start;
-    [SerializeField] private float x_Space, y_Space;
-
     [SerializeField] private int cols = 3;
     [SerializeField] private int rows = 3;
     [SerializeField] private int[,] bricksMap;
     [SerializeField] private List<int[,]> listOfBricksMaps;
+
+    [SerializeField] private List<GameObject> bricksList = new List<GameObject>();
 
 
     private void Awake()
@@ -54,6 +54,7 @@ public class BrickManager : MonoBehaviour
         Debug.Log($"{areaSR.bounds.size}, x: {areaWidth}, y: {areaHeight}");
         InitBrickMap();
         GenerateBricks();
+        CheckBricksOnScene();
     }
 
     void GenerateBricks()
@@ -62,8 +63,8 @@ public class BrickManager : MonoBehaviour
 
         float spacing = 0.2f;
 
-        float brickWidth = (areaWidth / cols) - spacing / 2f;
-        float brickHeight = (areaHeight / rows) - spacing / 2f;
+        float brickWidth = (areaWidth / cols) - (spacing / 2f);
+        float brickHeight = (areaHeight / rows) - (spacing / 2f);
 
         float widthDelta = (areaWidth - (cols * brickWidth) / cols) / ((1.4f * LevelManager.Instance.Level));
         float heightDelta = (areaHeight - (rows * brickHeight) / rows) / ((1.4f * LevelManager.Instance.Level));
@@ -77,9 +78,9 @@ public class BrickManager : MonoBehaviour
 
         // Debug.Log($"x:{brickWidth}, y: {brickHeight}, deltaX {widthDelta}, deltaY {heightDelta}");
 
-        for (int i = 0; i < cols; i++)
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < rows; j++)
+            for (int j = 0; j < cols; j++)
             {
                 if (bricksMap[i, j] != 0)
                 {
@@ -109,15 +110,35 @@ public class BrickManager : MonoBehaviour
     {
         bricksMap = new int[rows, cols];
 
-        for (int i = 0; i < cols; i++)
+        for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < rows; j++)
+            for (int j = 0; j < cols; j++)
             {
-                bricksMap[j, i] = (int)Random.Range(0, 5);
+                bricksMap[i, j] = (int)Random.Range(0, 5);
 
 
                 //Debug.Log($"row {j}, col {i}, val: {bricksMap[j, i]}");
             }
+        }
+    }
+
+    public void AddToBricksList(GameObject obj)
+    {
+        bricksList.Add(obj);
+
+    }
+
+    public void DeleteBrickFromList(GameObject obj)
+    {
+        bricksList.Remove(obj);
+    }
+
+    public void CheckBricksOnScene()
+    {
+        if(bricksList.Count == 0)
+        {
+            Debug.Log($"Level finished! Level: {LevelManager.Instance.Level}");
+            Time.timeScale = 0f;
         }
     }
 

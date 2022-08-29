@@ -847,12 +847,9 @@ MonoBehaviour:
   bricksArea: {fileID: 721862378}
   brickPrefab: {fileID: 7692575592709454520, guid: 3398192ab06d7484bb15c964900ebf17, type: 3}
   bricksParent: {fileID: 1034389136}
-  x_Start: -2
-  y_Start: -1.5
-  x_Space: 1
-  y_Space: 1
   cols: 3
-  rows: 3
+  rows: 4
+  bricksList: []
 --- !u!1 &1584112325
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,7 +940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a7c8e648e47ac04d9518db28a421911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 2
+  level: 1
 --- !u!1 &1872614207
 GameObject:
   m_ObjectHideFlags: 0

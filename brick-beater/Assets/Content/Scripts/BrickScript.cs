@@ -45,9 +45,11 @@ public class BrickScript : MonoBehaviour
     {
         if (hits <= 0)
         {
+            BrickManager.Instance.DeleteBrickFromList(this.gameObject);
             //Debug.Log($"At {this.GetInstanceID()}, {hits}");
             Destroy(this.gameObject);
             GameManager.Instance.AddScore();
+            BrickManager.Instance.CheckBricksOnScene();
 
         }
     }
@@ -58,6 +60,11 @@ public class BrickScript : MonoBehaviour
         {
             TakeDamage();
         }
+    }
+
+    private void OnEnable()
+    {
+        BrickManager.Instance.AddToBricksList(this.gameObject);
     }
 
 }
