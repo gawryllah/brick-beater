@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class BrickManager : MonoBehaviour
 {
+
+    public delegate void SpawnedBricks();
+    public SpawnedBricks OnSpawnedBricks;
+
     private static BrickManager instance;
 
     public static BrickManager Instance { get { return instance; } }
@@ -40,18 +44,21 @@ public class BrickManager : MonoBehaviour
         areaSR = bricksArea.GetComponent<SpriteRenderer>();
         areaWidth = areaSR.bounds.size.x;
         areaHeight = areaSR.bounds.size.y;
+
+        cols += LevelManager.Instance.Level - 1;
+        rows += LevelManager.Instance.Level - 1;
     }
 
     private void Start()
     {
         Debug.Log($"{areaSR.bounds.size}, x: {areaWidth}, y: {areaHeight}");
+        InitBrickMap();
         GenerateBricks();
     }
 
     void GenerateBricks()
     {
-        cols += LevelManager.Instance.Level - 1;
-        rows += LevelManager.Instance.Level - 1;
+
 
         float spacing = 0.2f;
 
@@ -63,102 +70,55 @@ public class BrickManager : MonoBehaviour
 
         brickPrefab.transform.localScale = new Vector3(brickWidth, brickHeight, 0f);
 
-        
+
 
         var startingPos = new Vector2(-(bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //left side
         var spawnPos = startingPos;
 
-        Debug.Log($"x:{brickWidth}, y: {brickHeight}, deltaX {widthDelta}, deltaY {heightDelta}");
+        // Debug.Log($"x:{brickWidth}, y: {brickHeight}, deltaX {widthDelta}, deltaY {heightDelta}");
 
         for (int i = 0; i < cols; i++)
         {
             for (int j = 0; j < rows; j++)
             {
-                var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
+                if (bricksMap[i, j] != 0)
+                {
+                    var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
+                    go.transform.SetParent(bricksParent.transform);
+                    if (go.GetComponent<BrickScript>() != null)
+                    {
+                        go.GetComponent<BrickScript>().SetHits(bricksMap[i, j]);
+                    }
+                }
                 spawnPos.y -= heightDelta;
-                go.transform.SetParent(bricksParent.transform);
-
-                Debug.Log($"i: {i}, j: {j}, Spawned {go.name}, at: {go.transform.position}, spawnX: {spawnPos.x}, spawnY: {spawnPos.y}");
+                //Debug.Log($"i: {i}, j: {j}, Spawned {go.name}, at: {go.transform.position}, spawnX: {spawnPos.x}, spawnY: {spawnPos.y}");
 
             }
 
-            if(i < cols - 1)
+            if (i < cols - 1)
                 spawnPos.x += widthDelta;
 
             spawnPos.y = startingPos.y;
         }
 
-
-        // var go = Instantiate(brickPrefab, new Vector2(bricksArea.transform.position.x + areaWidth/2, bricksArea.transform.position.y + areaHeight/2), Quaternion.identity);
-        //Instantiate(brickPrefab, new Vector2(-(bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)), Quaternion.identity);
-
-
-
-        /*
-         
-       for (int i = 0; i < cols + rows; i++)
-       {
-           Vector3 position;
-           position = new Vector3(x_Start + (x_Space * (i % cols)), y_Start + (y_Space * (i / cols)));
-           var go = Instantiate(brickPrefab, position, Quaternion.identity);
-           go.transform.SetParent(bricksParent.transform);
-
-       }
-
-
-
-       bricksMap = new int[rows, cols];
-
-       for (int i = 0; i < cols; i++)
-       {
-           for (int j = 0; j < rows; j++)
-           {
-               bricksMap[j, i] = (int)Random.Range(0, 5);
-
-
-               Debug.Log($"row {j}, col {i}, val: {bricksMap[j, i]}");
-           }
-       }
-
-       */
-
+        OnSpawnedBricks?.Invoke();
 
     }
 
-    Bounds getBounds(GameObject obj)
+    void InitBrickMap()
     {
-        Bounds bounds;
-        Renderer childRender;
-        bounds = getRenderBounds(obj);
-        if (bounds.extents.x == 0)
+        bricksMap = new int[rows, cols];
+
+        for (int i = 0; i < cols; i++)
         {
-            bounds = new Bounds(obj.transform.position, Vector3.zero);
-            foreach (Transform child in obj.transform)
+            for (int j = 0; j < rows; j++)
             {
-                childRender = child.GetComponent<Renderer>();
-                if (childRender)
-                {
-                    bounds.Encapsulate(childRender.bounds);
-                }
-                else
-                {
-                    bounds.Encapsulate(getBounds(child.gameObject));
-                }
+                bricksMap[j, i] = (int)Random.Range(0, 5);
+
+
+                //Debug.Log($"row {j}, col {i}, val: {bricksMap[j, i]}");
             }
         }
-        return bounds;
     }
-
-    Bounds getRenderBounds(GameObject obj)
-    {
-        Bounds bounds = new Bounds(Vector3.zero, Vector3.zero);
-        Renderer render = obj.GetComponent<Renderer>();
-        if (render != null)
-        {
-            return render.bounds;
-        }
-        return bounds;
-    }
-
 
 }

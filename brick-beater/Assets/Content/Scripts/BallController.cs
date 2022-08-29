@@ -7,12 +7,18 @@ public class BallController : MonoBehaviour
     [SerializeField] float speed;
     Vector2 startPosition;
 
-    private void Start()
+
+    private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+    }
 
-        rigidbody.AddForce(Vector2.down.normalized * speed, ForceMode2D.Impulse);
+    private void Start()
+    {
+      
         startPosition = transform.position;
+
+        
 
     }
 
@@ -47,6 +53,11 @@ public class BallController : MonoBehaviour
         else if (collision.gameObject.tag.Equals("Brick"))
         {
             rigidbody.velocity *= 1.02f;
+
+            //if(collision.gameObject.GetComponent<BrickScript>() != null)
+            //{
+            //    collision.gameObject.GetComponent<BrickScript>().TakeDamage();
+            //}
         }
     }
 
@@ -101,6 +112,16 @@ public class BallController : MonoBehaviour
         }
 
         //Debug.Log($"At: {this}, ended horizontalCheck, vel: {rigidbody.velocity}");
+    }
+
+    public void InitBall()
+    {
+        //rigidbody.AddForce(Vector2.down.normalized * speed, ForceMode2D.Impulse);
+    }
+
+    private void OnEnable()
+    {
+        rigidbody.AddForce(Vector2.down.normalized * speed, ForceMode2D.Impulse);
     }
 
 
