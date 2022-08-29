@@ -5,13 +5,14 @@ public class BallController : MonoBehaviour
 {
     private Rigidbody2D rigidbody;
     [SerializeField] float speed;
-    Vector2 direction;
+    Vector2 startPosition;
 
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
 
-        rigidbody.AddForce(Vector2.down.normalized * speed * Time.deltaTime, ForceMode2D.Impulse);
+        rigidbody.AddForce(Vector2.down.normalized * speed, ForceMode2D.Impulse);
+        startPosition = transform.position;
 
     }
 
@@ -51,6 +52,15 @@ public class BallController : MonoBehaviour
 
     void setMinimumVelocity()
     {
+        float minSpeed = 65f;
+        float speed = Vector2.SqrMagnitude(rigidbody.velocity);
+
+        if (speed < minSpeed)
+        {
+
+            rigidbody.velocity *= 1.05f;
+        }
+
         if (rigidbody.velocity.y >= 0 && rigidbody.velocity.y < 0.35f)
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, 1f);
@@ -78,7 +88,7 @@ public class BallController : MonoBehaviour
         }
 
     }
-    
+
 
     IEnumerator horizontalCheck()
     {

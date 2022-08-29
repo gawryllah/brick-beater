@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
 using UnityEngine;
 
 public class BrickManager : MonoBehaviour
@@ -9,9 +7,13 @@ public class BrickManager : MonoBehaviour
 
     public static BrickManager Instance { get { return instance; } }
 
+    private SpriteRenderer areaSR;
+    private float areaWidth;
+    private float areaHeight;
 
     [SerializeField] private GameObject bricksArea;
     [SerializeField] private GameObject brickPrefab;
+    [SerializeField] private GameObject bricksParent;
 
     [SerializeField] private float x_Start, y_Start;
     [SerializeField] private float x_Space, y_Space;
@@ -34,41 +36,91 @@ public class BrickManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(instance);
+
+        areaSR = bricksArea.GetComponent<SpriteRenderer>();
+        areaWidth = areaSR.bounds.size.x;
+        areaHeight = areaSR.bounds.size.y;
     }
 
     private void Start()
     {
+        Debug.Log($"{areaSR.bounds.size}, x: {areaWidth}, y: {areaHeight}");
         GenerateBricks();
     }
 
     void GenerateBricks()
     {
-        cols *= LevelManager.Instance.Level;
-        rows *= LevelManager.Instance.Level;
+        cols += LevelManager.Instance.Level - 1;
+        rows += LevelManager.Instance.Level - 1;
 
-        for (int i = 0; i < cols + rows; i++)
-        {
-            Vector3 position;
-            position = new Vector3(x_Start + (x_Space * (i % cols)), y_Start + (y_Space * (i / cols)));
-            Instantiate(brickPrefab, position, Quaternion.identity);
-        }
+        float spacing = 0.2f;
 
-        /*
+        float brickWidth = (areaWidth / cols) - spacing / 2f;
+        float brickHeight = (areaHeight / rows) - spacing / 2f;
 
-        bricksMap = new int[rows, cols];
+        float widthDelta = (areaWidth - (cols * brickWidth) / cols) / ((1.4f * LevelManager.Instance.Level));
+        float heightDelta = (areaHeight - (rows * brickHeight) / rows) / ((1.4f * LevelManager.Instance.Level));
+
+        brickPrefab.transform.localScale = new Vector3(brickWidth, brickHeight, 0f);
+
+        
+
+        var startingPos = new Vector2(-(bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //left side
+        var spawnPos = startingPos;
+
+        Debug.Log($"x:{brickWidth}, y: {brickHeight}, deltaX {widthDelta}, deltaY {heightDelta}");
 
         for (int i = 0; i < cols; i++)
         {
             for (int j = 0; j < rows; j++)
             {
-                bricksMap[j, i] = (int)Random.Range(0, 5);
+                var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
+                spawnPos.y -= heightDelta;
+                go.transform.SetParent(bricksParent.transform);
 
+                Debug.Log($"i: {i}, j: {j}, Spawned {go.name}, at: {go.transform.position}, spawnX: {spawnPos.x}, spawnY: {spawnPos.y}");
 
-                Debug.Log($"row {j}, col {i}, val: {bricksMap[j, i]}");
             }
+
+            if(i < cols - 1)
+                spawnPos.x += widthDelta;
+
+            spawnPos.y = startingPos.y;
         }
 
-        */
+
+        // var go = Instantiate(brickPrefab, new Vector2(bricksArea.transform.position.x + areaWidth/2, bricksArea.transform.position.y + areaHeight/2), Quaternion.identity);
+        //Instantiate(brickPrefab, new Vector2(-(bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)), Quaternion.identity);
+
+
+
+        /*
+         
+       for (int i = 0; i < cols + rows; i++)
+       {
+           Vector3 position;
+           position = new Vector3(x_Start + (x_Space * (i % cols)), y_Start + (y_Space * (i / cols)));
+           var go = Instantiate(brickPrefab, position, Quaternion.identity);
+           go.transform.SetParent(bricksParent.transform);
+
+       }
+
+
+
+       bricksMap = new int[rows, cols];
+
+       for (int i = 0; i < cols; i++)
+       {
+           for (int j = 0; j < rows; j++)
+           {
+               bricksMap[j, i] = (int)Random.Range(0, 5);
+
+
+               Debug.Log($"row {j}, col {i}, val: {bricksMap[j, i]}");
+           }
+       }
+
+       */
 
 
     }
