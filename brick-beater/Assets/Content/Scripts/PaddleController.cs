@@ -32,12 +32,15 @@ public class PaddleController : MonoBehaviour
 
     private void Update()
     {
-
-        Holdball();
         Move();
+        Interactions();
     }
 
-
+    void Interactions()
+    {
+        Holdball();
+        PauseGame();
+    }
 
     void Move()
     {
@@ -66,6 +69,21 @@ public class PaddleController : MonoBehaviour
         if (playerControls.Controls.Holdball.IsPressed())
         {
             Debug.Log($"at {this}, {playerControls.Controls.Holdball.name} {playerControls.Controls.Holdball.triggered}");
+        }
+    }
+
+    void PauseGame()
+    {
+        if (playerControls.Controls.PauseMenu.triggered)
+        {
+            if (UIManager.Instance.PauseMenuOpened)
+            {
+                GameManager.Instance.ClosePauseMenu();
+            }
+            else
+            {
+                GameManager.Instance.OpenPauseMenu();
+            }
         }
     }
 }

@@ -19,8 +19,8 @@ public class BrickManager : MonoBehaviour
     [SerializeField] private GameObject brickPrefab;
     [SerializeField] private GameObject bricksParent;
 
-    [SerializeField] private int cols = 3;
-    [SerializeField] private int rows = 3;
+    [SerializeField] private int cols;
+    [SerializeField] private int rows;
 
     [SerializeField] private float spacing = 0.2f;
     [SerializeField] private float brickWidth;
@@ -57,8 +57,8 @@ public class BrickManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log($"{areaSR.bounds.size}, x: {areaWidth}, y: {areaHeight}");
-      
+        //Debug.Log($"{areaSR.bounds.size}, x: {areaWidth}, y: {areaHeight}");
+
         SetBricksSize();
         InitBrickMap();
 
@@ -80,10 +80,10 @@ public class BrickManager : MonoBehaviour
 
         for (int i = 0; i < rows; i++)
         {
-          
+
             for (int j = 0; j < cols; j++)
             {
-                Debug.Log($"1 for, i: {i}, j: {j}");
+                //Debug.Log($"1 for, i: {i}, j: {j}");
                 if (bricksMap[i, j] != 0)
                 {
                     var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
@@ -94,7 +94,7 @@ public class BrickManager : MonoBehaviour
                     }
                 }
                 spawnPos.y -= heightDelta;
-                
+
 
             }
 
@@ -113,7 +113,7 @@ public class BrickManager : MonoBehaviour
 
             for (int j = 0; j < cols; j++)
             {
-                Debug.Log($"1 for, i: {i}, j: {j}");
+                //Debug.Log($"1 for, i: {i}, j: {j}");
                 if (bricksMap[i, j] != 0)
                 {
                     var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
