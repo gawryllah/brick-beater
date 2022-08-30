@@ -15,10 +15,10 @@ public class BallController : MonoBehaviour
 
     private void Start()
     {
-      
+
         startPosition = transform.position;
 
-        
+
 
     }
 
@@ -72,13 +72,13 @@ public class BallController : MonoBehaviour
             rigidbody.velocity *= 1.05f;
         }
 
-        if (rigidbody.velocity.y >= 0 && rigidbody.velocity.y < 0.35f)
+        if (rigidbody.velocity.y >= 0 && rigidbody.velocity.y < 0.5f)
         {
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, 1f);
+            rigidbody.AddForce(Vector2.up.normalized);
         }
-        else if (rigidbody.velocity.y < 0 && rigidbody.velocity.y > -0.35f)
+        else if (rigidbody.velocity.y < 0 && rigidbody.velocity.y > -0.5f)
         {
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x, -1f);
+            rigidbody.AddForce(Vector2.down.normalized);
         }
 
         if (rigidbody.velocity.x == 0)
@@ -121,7 +121,9 @@ public class BallController : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log($"{rigidbody.velocity}");
         rigidbody.AddForce(Vector2.down.normalized * speed, ForceMode2D.Impulse);
+        Debug.Log($"{rigidbody.velocity}");
     }
 
 

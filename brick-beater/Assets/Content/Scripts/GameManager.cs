@@ -41,7 +41,8 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (GameOn) {
+        if (GameOn)
+        {
             Instantiate(ballPrefab);
         }
     }

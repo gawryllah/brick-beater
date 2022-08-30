@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class BrickManager : MonoBehaviour
@@ -22,6 +21,13 @@ public class BrickManager : MonoBehaviour
 
     [SerializeField] private int cols = 3;
     [SerializeField] private int rows = 3;
+
+    [SerializeField] private float spacing = 0.2f;
+    [SerializeField] private float brickWidth;
+    [SerializeField] private float brickHeight;
+    [SerializeField] private float widthDelta;
+    [SerializeField] private float heightDelta;
+
     [SerializeField] private int[,] bricksMap;
     [SerializeField] private List<int[,]> listOfBricksMaps;
 
@@ -52,25 +58,19 @@ public class BrickManager : MonoBehaviour
     private void Start()
     {
         Debug.Log($"{areaSR.bounds.size}, x: {areaWidth}, y: {areaHeight}");
+      
+        SetBricksSize();
         InitBrickMap();
+
+        rows /= 2;
+        cols /= 2;
+
         GenerateBricks();
         CheckBricksOnScene();
     }
 
     void GenerateBricks()
     {
-
-
-        float spacing = 0.2f;
-
-        float brickWidth = (areaWidth / cols) - (spacing / 2f);
-        float brickHeight = (areaHeight / rows) - (spacing / 2f);
-
-        float widthDelta = (areaWidth - (cols * brickWidth) / cols) / ((1.4f * LevelManager.Instance.Level));
-        float heightDelta = (areaHeight - (rows * brickHeight) / rows) / ((1.4f * LevelManager.Instance.Level));
-
-        brickPrefab.transform.localScale = new Vector3(brickWidth, brickHeight, 0f);
-
 
 
         var startingPos = new Vector2(-(bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //left side
@@ -80,8 +80,10 @@ public class BrickManager : MonoBehaviour
 
         for (int i = 0; i < rows; i++)
         {
+          
             for (int j = 0; j < cols; j++)
             {
+                Debug.Log($"1 for, i: {i}, j: {j}");
                 if (bricksMap[i, j] != 0)
                 {
                     var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
@@ -92,18 +94,62 @@ public class BrickManager : MonoBehaviour
                     }
                 }
                 spawnPos.y -= heightDelta;
-                //Debug.Log($"i: {i}, j: {j}, Spawned {go.name}, at: {go.transform.position}, spawnX: {spawnPos.x}, spawnY: {spawnPos.y}");
+                
 
             }
 
-            if (i < cols - 1)
-                spawnPos.x += widthDelta;
+            //if (i < cols - 1)
+            spawnPos.x += widthDelta;
+
+            spawnPos.y = startingPos.y;
+        }
+
+        startingPos = new Vector2((bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //right side
+        spawnPos = startingPos;
+
+
+        for (int i = 0; i < rows; i++)
+        {
+
+            for (int j = 0; j < cols; j++)
+            {
+                Debug.Log($"1 for, i: {i}, j: {j}");
+                if (bricksMap[i, j] != 0)
+                {
+                    var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
+                    go.transform.SetParent(bricksParent.transform);
+                    if (go.GetComponent<BrickScript>() != null)
+                    {
+                        go.GetComponent<BrickScript>().SetHits(bricksMap[i, j]);
+                    }
+                }
+                spawnPos.y -= heightDelta;
+
+
+            }
+
+            //if (i < cols - 1)
+            spawnPos.x -= widthDelta;
 
             spawnPos.y = startingPos.y;
         }
 
         OnSpawnedBricks?.Invoke();
 
+    }
+
+    void SetBricksSize()
+    {
+
+        spacing = 0.2f;
+
+        brickWidth = (areaWidth / cols) - (spacing / 2f);
+        brickHeight = (areaHeight / rows) - (spacing / 2f);
+
+        widthDelta = (areaWidth - (cols * brickWidth) / cols) / ((1.4f * LevelManager.Instance.Level));
+        heightDelta = (areaHeight - (rows * brickHeight) / rows) / ((1.4f * LevelManager.Instance.Level));
+
+        brickPrefab.transform.localScale = new Vector3(brickWidth, brickHeight, 0f);
     }
 
     void InitBrickMap()
@@ -135,7 +181,7 @@ public class BrickManager : MonoBehaviour
 
     public void CheckBricksOnScene()
     {
-        if(bricksList.Count == 0)
+        if (bricksList.Count == 0)
         {
             Debug.Log($"Level finished! Level: {LevelManager.Instance.Level}");
             Time.timeScale = 0f;
