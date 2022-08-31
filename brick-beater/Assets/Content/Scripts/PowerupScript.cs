@@ -8,11 +8,7 @@ public class PowerupScript : MonoBehaviour
 
     float speed = 1.5f;
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
 
     private void FixedUpdate()
     {

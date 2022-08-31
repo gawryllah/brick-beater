@@ -20,7 +20,7 @@ public class BallController : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+
         canLoseHP = true;
         bubble.SetActive(false);
 
@@ -52,11 +52,13 @@ public class BallController : MonoBehaviour
         {
             if (collision.collider.offset.x < 0)
             {
-                rb.AddForce((Vector2.left.normalized * 3f), ForceMode2D.Force);
+                Debug.Log($"lewo {Vector2.left.normalized * 3f}");
+                rb.AddForce((Vector2.left.normalized * 5f), ForceMode2D.Force);
             }
             else
             {
-                rb.AddForce((Vector2.right.normalized * 3f), ForceMode2D.Force);
+                Debug.Log($"prawo {Vector2.right.normalized * 3f}");
+                rb.AddForce((Vector2.right.normalized * 5f), ForceMode2D.Force);
             }
 
         }
@@ -140,13 +142,26 @@ public class BallController : MonoBehaviour
 
     public void InitBall()
     {
+
+        GameManager.Instance.ResumeGame();
         GameManager.Instance.GameOn = true;
+
+
         rb.AddForce(Vector2.down.normalized * speed, ForceMode2D.Impulse);
+
+    }
+
+    public void RestartBall()
+    {
+        transform.position = startPosition;
+        BallSpawned?.Invoke();
     }
 
     private void OnEnable()
     {
+        rb = GetComponent<Rigidbody2D>();
         BallSpawned?.Invoke();
+        Debug.Log($"On eneble, id: {this.gameObject.GetInstanceID()}");
     }
 
 

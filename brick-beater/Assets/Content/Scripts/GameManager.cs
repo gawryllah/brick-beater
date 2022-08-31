@@ -15,7 +15,10 @@ public class GameManager : MonoBehaviour, IUIHandler
     [SerializeField] private int startingHP;
 
 
+
+
     [SerializeField] private GameObject ballPrefab;
+    [SerializeField] private GameObject ballGO;
 
     [SerializeField] private List<GameObject> powerupsList = new List<GameObject>(); public List<GameObject> PowerUpsList { get { return powerupsList; } }
 
@@ -60,8 +63,10 @@ public class GameManager : MonoBehaviour, IUIHandler
 
     void StartGame()
     {
-        Instantiate(ballPrefab);
+        if(ballGO == null)
+            ballGO = Instantiate(ballPrefab);
         UIManager.Instance.UpdateUI();
+
     }
 
     void LoseHealth()
@@ -93,6 +98,23 @@ public class GameManager : MonoBehaviour, IUIHandler
             }
             Time.timeScale = 0f;
         }
+    }
+
+    public void RestartBall()
+    {
+        PauseGame();
+        GameOn = false;
+        ballGO.GetComponent<BallController>().RestartBall();
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
     }
 
     public void OpenPauseMenu()

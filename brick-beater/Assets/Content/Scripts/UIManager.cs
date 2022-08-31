@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour, IUIHandler
         InitUI();
 
         BallController.BallSpawned += CountDown;
-        LevelManager.Instance.LevelLoaded += CountDown;
+        //LevelManager.Instance.LevelLoaded += CountDown;
     }
 
     public void Resume()
@@ -109,6 +109,7 @@ public class UIManager : MonoBehaviour, IUIHandler
 
     private IEnumerator CountDownText(int value)
     {
+        cdGo.SetActive(true);
         for (int i = value; i > 0; i--)
         {
             cdText.text = $"{i}";

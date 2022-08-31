@@ -23,9 +23,13 @@ public class LevelManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(instance);
-
+        level = 1;
 
     }
 
+    public void LevelUp()
+    {
+        this.level++;
+    }
 
 }

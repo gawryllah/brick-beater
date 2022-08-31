@@ -22,6 +22,10 @@ public class BrickManager : MonoBehaviour
     [SerializeField] private int cols;
     [SerializeField] private int rows;
 
+    [SerializeField] private int finalCols;
+    [SerializeField] private int finalRows;
+
+
     [SerializeField] private float spacing = 0.2f;
     [SerializeField] private float brickWidth;
     [SerializeField] private float brickHeight;
@@ -29,7 +33,7 @@ public class BrickManager : MonoBehaviour
     [SerializeField] private float heightDelta;
 
     [SerializeField] private int[,] bricksMap;
-    [SerializeField] private List<int[,]> listOfBricksMaps;
+    [SerializeField] private List<int[,]> listOfBricksMaps = new List<int[,]>();
 
     [SerializeField] private List<GameObject> bricksList = new List<GameObject>();
 
@@ -51,22 +55,16 @@ public class BrickManager : MonoBehaviour
         areaWidth = areaSR.bounds.size.x;
         areaHeight = areaSR.bounds.size.y;
 
+        finalCols = cols;
+        finalRows = rows;
+
         cols += LevelManager.Instance.Level - 1;
         rows += LevelManager.Instance.Level - 1;
     }
 
     private void Start()
     {
-        //Debug.Log($"{areaSR.bounds.size}, x: {areaWidth}, y: {areaHeight}");
-
-        SetBricksSize();
-        InitBrickMap();
-
-        rows /= 2;
-        cols /= 2;
-
-        GenerateBricks();
-        //CheckBricksOnScene();
+        CreateNewLevel();
     }
 
     void GenerateBricks()
@@ -166,12 +164,40 @@ public class BrickManager : MonoBehaviour
                 //Debug.Log($"row {j}, col {i}, val: {bricksMap[j, i]}");
             }
         }
+
+        listOfBricksMaps.Add(bricksMap);
+    }
+
+    public void CreateNewLevel()
+    {
+        rows = finalRows;
+        cols = finalCols;
+
+        cols += LevelManager.Instance.Level - 1;
+        rows += LevelManager.Instance.Level - 1;
+
+        Debug.Log($"lisa connt: {listOfBricksMaps.Count}, level: {LevelManager.Instance.Level} ");
+        SetBricksSize();
+        if (listOfBricksMaps.Count == LevelManager.Instance.Level)
+        {
+            bricksMap = listOfBricksMaps[LevelManager.Instance.Level - 1];
+        }
+        else
+        {
+            InitBrickMap();
+        }
+
+        rows /= 2;
+        cols /= 2;
+
+        GenerateBricks();
+
+
     }
 
     public void AddToBricksList(GameObject obj)
     {
         bricksList.Add(obj);
-
     }
 
     public void DeleteBrickFromList(GameObject obj)
@@ -184,7 +210,10 @@ public class BrickManager : MonoBehaviour
         if (bricksList.Count == 0)
         {
             Debug.Log($"Level finished! Level: {LevelManager.Instance.Level}");
-            Time.timeScale = 0f;
+            GameManager.Instance.RestartBall();
+            LevelManager.Instance.LevelUp();
+            CreateNewLevel();
+
         }
     }
 

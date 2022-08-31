@@ -6,6 +6,8 @@ public class PaddleController : MonoBehaviour
     private PlayerControls playerControls;
     [SerializeField] ControlsStats controlsStats;
 
+    [SerializeField] private Vector2 startingPos;
+
     private float height;
     private float startingSpeed;
 
@@ -30,6 +32,9 @@ public class PaddleController : MonoBehaviour
     {
         height = transform.position.y;
         startingSpeed = controlsStats.Speed;
+        startingPos = transform.position;
+
+        BrickManager.Instance.OnSpawnedBricks += RestartPos;
     }
 
 
@@ -93,6 +98,13 @@ public class PaddleController : MonoBehaviour
         }
     }
 
+    void RestartPos()
+    {
+
+        transform.position = startingPos;
+    }
+
+
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -108,11 +120,11 @@ public class PaddleController : MonoBehaviour
         {
             Debug.Log("speed trigger detected");
             Destroy(collision.gameObject);
-            StartCoroutine(speedPU());
+            StartCoroutine(speedUp());
         }
     }
 
-    private IEnumerator speedPU()
+    private IEnumerator speedUp()
     {
         controlsStats.Speed *= 2f;
         yield return new WaitForSeconds(6f);
