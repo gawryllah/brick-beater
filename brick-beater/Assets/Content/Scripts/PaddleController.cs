@@ -32,8 +32,11 @@ public class PaddleController : MonoBehaviour
 
     private void Update()
     {
-        Move();
-        Interactions();
+        if (GameManager.Instance.GameOn)
+        {
+            Move();
+            Interactions();
+        }
     }
 
     void Interactions()

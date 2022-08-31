@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,11 +13,18 @@ public class UIManager : MonoBehaviour, IUIHandler
     [SerializeField] private IntSO score;
     [SerializeField] private IntSO hp;
 
+    [SerializeField] private int cdValue;
+
+    [SerializeField] private GameObject cdGo;
+    [SerializeField] private TMP_Text cdText;
     [SerializeField] private GameObject pauseMenu; public bool PauseMenuOpened { get { return pauseMenu.activeSelf; } }
 
     [SerializeField] private TMP_Text hpText;
     [SerializeField] private TMP_Text hiScoreText;
     [SerializeField] private TMP_Text scoreText;
+
+    public delegate void UIEvent();
+    public UIEvent CountdownFinished;
 
 
     private void Awake()
@@ -32,6 +40,8 @@ public class UIManager : MonoBehaviour, IUIHandler
 
         DontDestroyOnLoad(instance);
         InitUI();
+
+        BallController.BallSpawned += CountDown;
     }
 
     public void Resume()
@@ -46,6 +56,8 @@ public class UIManager : MonoBehaviour, IUIHandler
 
     public void QuitToMenu()
     {
+        TurnOffUI();
+        GameManager.Instance.ClosePauseMenu();
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -73,6 +85,32 @@ public class UIManager : MonoBehaviour, IUIHandler
         hpText.gameObject.SetActive(true);
         hiScoreText.gameObject.SetActive(true);
         scoreText.gameObject.SetActive(true);
+
+        cdGo.SetActive(true);
+    }
+
+    void TurnOffUI()
+    {
+        pauseMenu.SetActive(false);
+        hpText.gameObject.SetActive(false);
+        hiScoreText.gameObject.SetActive(false);
+        scoreText.gameObject.SetActive(false);
+    }
+
+    void CountDown()
+    {
+        StartCoroutine(CountDownText(cdValue));
+    }
+
+    private IEnumerator CountDownText(int value)
+    {
+        for (int i = value; i > 0; i--)
+        {
+            cdText.text = $"{i}";
+            yield return new WaitForSecondsRealtime(1);
+        }
+        cdGo.SetActive(false);
+        CountdownFinished?.Invoke();
     }
 
 

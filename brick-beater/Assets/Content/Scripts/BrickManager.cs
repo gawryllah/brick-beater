@@ -66,7 +66,7 @@ public class BrickManager : MonoBehaviour
         cols /= 2;
 
         GenerateBricks();
-        CheckBricksOnScene();
+        //CheckBricksOnScene();
     }
 
     void GenerateBricks()

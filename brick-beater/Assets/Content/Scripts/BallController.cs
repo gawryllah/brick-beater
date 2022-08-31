@@ -11,26 +11,37 @@ public class BallController : MonoBehaviour
 
     [SerializeField] private GameObject bubble;
 
-    public delegate void TouchedGroundEvent();
-    public static TouchedGroundEvent TouchedGround;
+    [SerializeField] private float minSpeed;
+    [SerializeField] private float maxSpeed;
+
+    public delegate void BallEvent();
+    public static BallEvent TouchedGround;
+    public static BallEvent BallSpawned;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         canLoseHP = true;
         bubble.SetActive(false);
+
+        UIManager.Instance.CountdownFinished += InitBall;
     }
 
     private void Start()
     {
         startPosition = transform.position;
+        minSpeed = 65f;
+        maxSpeed = 250f;
     }
 
 
     private void FixedUpdate()
     {
-        setMinimumVelocity();
-        setMaximumVelocity();
+        if (GameManager.Instance.GameOn)
+        {
+            setMinimumVelocity();
+            setMaximumVelocity();
+        }
         //Debug.Log(Vector2.SqrMagnitude(rigidbody.velocity));
     }
 
@@ -76,7 +87,7 @@ public class BallController : MonoBehaviour
 
     void setMinimumVelocity()
     {
-        float minSpeed = 65f;
+
         float speed = Vector2.SqrMagnitude(rb.velocity);
 
         if (speed < minSpeed)
@@ -102,7 +113,7 @@ public class BallController : MonoBehaviour
 
     void setMaximumVelocity()
     {
-        float maxSpeed = 300f;
+
         float speed = Vector2.SqrMagnitude(rb.velocity);
 
         if (speed > maxSpeed)
@@ -129,14 +140,13 @@ public class BallController : MonoBehaviour
 
     public void InitBall()
     {
-        //rigidbody.AddForce(Vector2.down.normalized * speed, ForceMode2D.Impulse);
+        GameManager.Instance.GameOn = true;
+        rb.AddForce(Vector2.down.normalized * speed, ForceMode2D.Impulse);
     }
 
     private void OnEnable()
     {
-        // Debug.Log($"{rigidbody.velocity}");
-        rb.AddForce(Vector2.down.normalized * speed, ForceMode2D.Impulse);
-        //Debug.Log($"{rigidbody.velocity}");
+        BallSpawned?.Invoke();
     }
 
 

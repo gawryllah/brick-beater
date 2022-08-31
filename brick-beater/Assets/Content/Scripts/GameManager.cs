@@ -30,14 +30,18 @@ public class GameManager : MonoBehaviour, IUIHandler
         }
 
         DontDestroyOnLoad(instance);
+
+        GameOn = false;
+
         hp.Value = 5;
         score.Value = 0;
+
 
     }
 
     private void Start()
     {
-        GameOn = true;
+
         BrickManager.Instance.OnSpawnedBricks += StartGame;
         BallController.TouchedGround += LoseHealth;
     }
@@ -52,11 +56,11 @@ public class GameManager : MonoBehaviour, IUIHandler
 
     void StartGame()
     {
-        if (GameOn)
-        {
-            Instantiate(ballPrefab);
-            UIManager.Instance.UpdateUI();
-        }
+
+
+        Instantiate(ballPrefab);
+        UIManager.Instance.UpdateUI();
+
     }
 
     void LoseHealth()
