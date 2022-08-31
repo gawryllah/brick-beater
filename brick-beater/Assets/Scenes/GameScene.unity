@@ -2655,6 +2655,9 @@ MonoBehaviour:
   hp: {fileID: 11400000, guid: 60f487c8da774684eb36a3a321f0f553, type: 2}
   startingHP: 100
   ballPrefab: {fileID: 574149333963760488, guid: 5246568c9583abd48898944fa5a00cb0, type: 3}
+  powerupsList:
+  - {fileID: 4008912704892952540, guid: 6d723a94c27c4bf42becdc9002568721, type: 3}
+  - {fileID: 308738096617974838, guid: ab38773e1f118b549931a6bd026cca1f, type: 3}
 --- !u!4 &1584112327
 Transform:
   m_ObjectHideFlags: 0
@@ -2714,7 +2717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a7c8e648e47ac04d9518db28a421911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 1
+  level: 15
 --- !u!1 &1697307331
 GameObject:
   m_ObjectHideFlags: 0

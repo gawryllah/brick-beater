@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 7692575592709454520}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.8266, y: 1.34495, z: 0}
+  m_LocalScale: {x: 0.3281333, y: 0.2211, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -125,8 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69cb5017e7f4db64f9354bf7e44001ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerupList:
-  - {fileID: 4008912704892952540, guid: 6d723a94c27c4bf42becdc9002568721, type: 3}
   hits: 0
 --- !u!60 &6794460820504229842
 PolygonCollider2D:

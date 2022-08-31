@@ -6,7 +6,7 @@ public class BrickScript : MonoBehaviour
 {
     private static bool canRespPowerup;
     private static bool isCooldownStarted;
-    [SerializeField] private List<GameObject> powerupList = new List<GameObject>();
+    //[SerializeField] private List<GameObject> powerupList = new List<GameObject>();
 
     private SpriteRenderer sr;
     [SerializeField] private int hits;
@@ -72,7 +72,7 @@ public class BrickScript : MonoBehaviour
             if(Random.Range(0f, 1f) < 0.5f)
             {
                 Debug.Log("Powerup resped");
-                Instantiate(powerupList[Random.Range(0, powerupList.Count)], pos, Quaternion.identity);
+                Instantiate(GameManager.Instance.PowerUpsList[Random.Range(0, GameManager.Instance.PowerUpsList.Count)], pos, Quaternion.identity);
                 canRespPowerup = false;
                 isCooldownStarted = true;
                 StartCoroutine(PowerUpCooldown());

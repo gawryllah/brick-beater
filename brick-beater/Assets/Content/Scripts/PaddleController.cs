@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PaddleController : MonoBehaviour
@@ -6,6 +7,7 @@ public class PaddleController : MonoBehaviour
     [SerializeField] ControlsStats controlsStats;
 
     private float height;
+    private float startingSpeed;
 
 
 
@@ -27,6 +29,7 @@ public class PaddleController : MonoBehaviour
     private void Start()
     {
         height = transform.position.y;
+        startingSpeed = controlsStats.Speed;
     }
 
 
@@ -96,10 +99,24 @@ public class PaddleController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Heart")
         {
-            Debug.Log("trigger detected");
+            Debug.Log("heal trigger detected");
             Destroy(collision.gameObject);
             GameManager.Instance.AddHealth();
+
+        }else if (collision.gameObject.tag == "Speed")
+        {
+            Debug.Log("speed trigger detected");
+            Destroy(collision.gameObject);
+            StartCoroutine(speedPU());
         }
+    }
+
+    private IEnumerator speedPU()
+    {
+        controlsStats.Speed *= 2f;
+        yield return new WaitForSeconds(6f);
+        controlsStats.Speed = startingSpeed;
+
     }
  
 }

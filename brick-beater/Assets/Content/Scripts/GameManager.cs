@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour, IUIHandler
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour, IUIHandler
 
 
     [SerializeField] private GameObject ballPrefab;
+
+    [SerializeField] private List<GameObject> powerupsList = new List<GameObject>(); public List<GameObject> PowerUpsList { get { return powerupsList; } }
 
 
 
