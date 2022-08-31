@@ -85,7 +85,7 @@ public class PaddleController : MonoBehaviour
 
     void PauseGame()
     {
-        if (playerControls.Controls.PauseMenu.triggered)
+        if (playerControls.Controls.PauseMenu.triggered && !UIManager.Instance.GameOverViewOpened)
         {
             if (UIManager.Instance.PauseMenuOpened)
             {
