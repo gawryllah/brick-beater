@@ -176,7 +176,6 @@ public class BrickManager : MonoBehaviour
         cols += LevelManager.Instance.Level - 1;
         rows += LevelManager.Instance.Level - 1;
 
-        Debug.Log($"lisa connt: {listOfBricksMaps.Count}, level: {LevelManager.Instance.Level} ");
         SetBricksSize();
         if (listOfBricksMaps.Count == LevelManager.Instance.Level)
         {

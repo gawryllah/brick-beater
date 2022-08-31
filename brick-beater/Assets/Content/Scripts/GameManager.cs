@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour, IUIHandler
 {
+    public delegate void GameManagerEvents();
+    public GameManagerEvents OnRunOutOHP;
+
     private static GameManager instance;
 
     public static GameManager Instance { get { return instance; } }
@@ -63,7 +66,7 @@ public class GameManager : MonoBehaviour, IUIHandler
 
     void StartGame()
     {
-        if(ballGO == null)
+        if (ballGO == null)
             ballGO = Instantiate(ballPrefab);
         UIManager.Instance.UpdateUI();
 
@@ -89,12 +92,13 @@ public class GameManager : MonoBehaviour, IUIHandler
     {
         if (hp.Value <= 0)
         {
-
+            OnRunOutOHP?.Invoke();
             Debug.Log($"Out of HPs! You Lost! HP: {hp.Value}");
             if (score.Value > hiScore.Value)
             {
                 hiScore.Value = score.Value;
                 UIManager.Instance.UpdateUI();
+
             }
             Time.timeScale = 0f;
         }

@@ -19,6 +19,9 @@ public class UIManager : MonoBehaviour, IUIHandler
     [SerializeField] private TMP_Text cdText;
     [SerializeField] private GameObject pauseMenu; public bool PauseMenuOpened { get { return pauseMenu.activeSelf; } }
 
+    [SerializeField] private GameObject gameOverView;
+    [SerializeField] protected TMP_Text gameOverText;
+
     [SerializeField] private TMP_Text hpText;
     [SerializeField] private TMP_Text hiScoreText;
     [SerializeField] private TMP_Text scoreText;
@@ -43,6 +46,7 @@ public class UIManager : MonoBehaviour, IUIHandler
         InitUI();
 
         BallController.BallSpawned += CountDown;
+        GameManager.Instance.OnRunOutOHP += ShowGameOver;
         //LevelManager.Instance.LevelLoaded += CountDown;
     }
 
@@ -85,6 +89,8 @@ public class UIManager : MonoBehaviour, IUIHandler
     void InitUI()
     {
         pauseMenu.SetActive(false);
+        gameOverView.SetActive(false);
+
         hpText.gameObject.SetActive(true);
         hiScoreText.gameObject.SetActive(true);
         scoreText.gameObject.SetActive(true);
@@ -100,6 +106,7 @@ public class UIManager : MonoBehaviour, IUIHandler
         hiScoreText.gameObject.SetActive(false);
         scoreText.gameObject.SetActive(false);
         levelText.gameObject.SetActive(false);
+        gameOverView.SetActive(false);
     }
 
     void CountDown()
@@ -117,6 +124,13 @@ public class UIManager : MonoBehaviour, IUIHandler
         }
         cdGo.SetActive(false);
         CountdownFinished?.Invoke();
+    }
+
+    void ShowGameOver()
+    {
+        gameOverText.text = scoreText.text;
+        //UpdateUI();
+        gameOverView.SetActive(true);
     }
 
 

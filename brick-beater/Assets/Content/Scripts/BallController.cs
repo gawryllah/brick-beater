@@ -42,7 +42,7 @@ public class BallController : MonoBehaviour
             setMinimumVelocity();
             setMaximumVelocity();
         }
-        //Debug.Log(Vector2.SqrMagnitude(rigidbody.velocity));
+   ;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -52,12 +52,12 @@ public class BallController : MonoBehaviour
         {
             if (collision.collider.offset.x < 0)
             {
-                Debug.Log($"lewo {Vector2.left.normalized * 3f}");
+
                 rb.AddForce((Vector2.left.normalized * 5f), ForceMode2D.Force);
             }
             else
             {
-                Debug.Log($"prawo {Vector2.right.normalized * 3f}");
+
                 rb.AddForce((Vector2.right.normalized * 5f), ForceMode2D.Force);
             }
 
@@ -129,7 +129,7 @@ public class BallController : MonoBehaviour
 
     IEnumerator horizontalCheck()
     {
-        //Debug.Log($"At: {this}, started horizontalCheck, vel: {rigidbody.velocity}");
+
         yield return new WaitForSeconds(3.5f);
 
         if (rb.velocity.x == 0)
@@ -137,7 +137,7 @@ public class BallController : MonoBehaviour
             rb.velocity = new Vector2(Random.Range(-1f, 1f), rb.velocity.y);
         }
 
-        //Debug.Log($"At: {this}, ended horizontalCheck, vel: {rigidbody.velocity}");
+
     }
 
     public void InitBall()
@@ -161,7 +161,7 @@ public class BallController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         BallSpawned?.Invoke();
-        Debug.Log($"On eneble, id: {this.gameObject.GetInstanceID()}");
+
     }
 
 
