@@ -17,9 +17,6 @@ public class GameManager : MonoBehaviour, IUIHandler
     [SerializeField] private IntSO hp;
     [SerializeField] private int startingHP;
 
-
-
-
     [SerializeField] private GameObject ballPrefab;
     [SerializeField] private GameObject ballGO;
 

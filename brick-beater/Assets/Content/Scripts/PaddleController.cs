@@ -9,9 +9,8 @@ public class PaddleController : MonoBehaviour
     [SerializeField] private Vector2 startingPos;
 
     private float height;
-    private float startingSpeed;
-
-
+    private float baseSpeed;
+    private float baseWidth;
 
     private void Awake()
     {
@@ -21,6 +20,7 @@ public class PaddleController : MonoBehaviour
     private void OnEnable()
     {
         playerControls.Enable();
+        baseSpeed = controlsStats.Speed;
     }
 
     private void OnDisable()
@@ -30,8 +30,9 @@ public class PaddleController : MonoBehaviour
 
     private void Start()
     {
+        baseWidth = transform.localScale.x;
         height = transform.position.y;
-        startingSpeed = controlsStats.Speed;
+ 
         startingPos = transform.position;
 
         BrickManager.Instance.OnSpawnedBricks += RestartPos;
@@ -49,7 +50,7 @@ public class PaddleController : MonoBehaviour
 
     void Interactions()
     {
-        Holdball();
+        //Holdball();
         PauseGame();
     }
 
@@ -69,17 +70,9 @@ public class PaddleController : MonoBehaviour
         else
         {
 
-            var newPos = new Vector2(transform.position.x + (playerControls.Controls.Movement.ReadValue<Vector2>().x * controlsStats.Speed * Time.deltaTime), height);
+            var newPos = new Vector2(transform.position.x + (playerControls.Controls.Movement.ReadValue<Vector2>().x * baseSpeed * Time.deltaTime), height);
 
             transform.position = newPos;
-        }
-    }
-
-    void Holdball()
-    {
-        if (playerControls.Controls.Holdball.IsPressed())
-        {
-            Debug.Log($"at {this}, {playerControls.Controls.Holdball.name} {playerControls.Controls.Holdball.triggered}");
         }
     }
 
@@ -102,7 +95,7 @@ public class PaddleController : MonoBehaviour
     {
 
         transform.position = startingPos;
-        controlsStats.Speed = startingSpeed;
+        baseSpeed = controlsStats.Speed;
     }
 
 
@@ -122,15 +115,32 @@ public class PaddleController : MonoBehaviour
             //Debug.Log("speed trigger detected");
             Destroy(collision.gameObject);
             StartCoroutine(speedUp());
+        }else if (collision.gameObject.tag == "Shroom")
+        {
+            Destroy(collision.gameObject);
+            var width = transform.localScale;
+
+            width.x *= 1.25f;
+
+            transform.localScale = width;
+            StartCoroutine(expandCD());
         }
     }
 
     private IEnumerator speedUp()
     {
-        controlsStats.Speed *= 2f;
+        
+        baseSpeed *= 2f;
         yield return new WaitForSeconds(6f);
-        controlsStats.Speed = startingSpeed;
+        baseSpeed = controlsStats.Speed;
 
     }
+
+    private IEnumerator expandCD()
+    {
+        yield return new WaitForSeconds(5f);
+        transform.localScale = new Vector3(baseWidth, transform.localScale.y, transform.localScale.z);   
+    }
+
 
 }

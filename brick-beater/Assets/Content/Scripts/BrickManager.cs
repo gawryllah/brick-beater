@@ -211,6 +211,12 @@ public class BrickManager : MonoBehaviour
             Debug.Log($"Level finished! Level: {LevelManager.Instance.Level}");
             GameManager.Instance.RestartBall();
             LevelManager.Instance.LevelUp();
+
+            foreach(var obj in GameObject.FindObjectsOfType<PowerupScript>())
+            {
+                Destroy(obj);
+            }
+
             CreateNewLevel();
 
         }

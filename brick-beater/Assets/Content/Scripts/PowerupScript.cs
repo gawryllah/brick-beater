@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PowerupScript : MonoBehaviour
 {
-    enum PowerupLabel { HEAL, SPEED };
+    enum PowerupLabel { HEAL, SPEED, EXPAND };
 
     [SerializeField] private PowerupLabel powerupLabel;
 

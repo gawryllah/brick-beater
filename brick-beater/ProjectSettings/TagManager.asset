@@ -11,6 +11,7 @@ TagManager:
   - Ball
   - Heart
   - Speed
+  - Shroom
   layers:
   - Default
   - TransparentFX

@@ -3372,12 +3372,13 @@ MonoBehaviour:
   hiScore: {fileID: 11400000, guid: e9ba51c00918f654a80d64581ab97873, type: 2}
   score: {fileID: 11400000, guid: 2185e52f9b643844fb96bf71fec197c6, type: 2}
   hp: {fileID: 11400000, guid: 60f487c8da774684eb36a3a321f0f553, type: 2}
-  startingHP: 2
+  startingHP: 100
   ballPrefab: {fileID: 574149333963760488, guid: 5246568c9583abd48898944fa5a00cb0, type: 3}
   ballGO: {fileID: 0}
   powerupsList:
   - {fileID: 4008912704892952540, guid: 6d723a94c27c4bf42becdc9002568721, type: 3}
   - {fileID: 308738096617974838, guid: ab38773e1f118b549931a6bd026cca1f, type: 3}
+  - {fileID: 8598815071153212340, guid: fd16deeeee4449b469a30ad7efe2f506, type: 3}
 --- !u!4 &1584112327
 Transform:
   m_ObjectHideFlags: 0
