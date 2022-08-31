@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour, IUIHandler
     [SerializeField] private TMP_Text cdText;
     [SerializeField] private GameObject pauseMenu; public bool PauseMenuOpened { get { return pauseMenu.activeSelf; } }
 
-    [SerializeField] private GameObject gameOverView; public bool GameOverViewOpened { get { return gameOverView.activeSelf; } }    
+    [SerializeField] private GameObject gameOverView; public bool GameOverViewOpened { get { return gameOverView.activeSelf; } }
     [SerializeField] protected TMP_Text gameOverText;
 
     [SerializeField] private TMP_Text hpText;

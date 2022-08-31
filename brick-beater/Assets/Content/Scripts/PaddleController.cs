@@ -102,6 +102,7 @@ public class PaddleController : MonoBehaviour
     {
 
         transform.position = startingPos;
+        controlsStats.Speed = startingSpeed;
     }
 
 

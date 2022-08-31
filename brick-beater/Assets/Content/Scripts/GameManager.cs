@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour, IUIHandler
         hp.Value = startingHP;
         score.Value = 0;
 
+        SetHiScore();
+
 
     }
 
@@ -96,6 +98,7 @@ public class GameManager : MonoBehaviour, IUIHandler
             Debug.Log($"Out of HPs! You Lost! HP: {hp.Value}");
             if (score.Value > hiScore.Value)
             {
+                PlayerPrefs.SetInt("BB-HiScore", score.Value);
                 hiScore.Value = score.Value;
                 UIManager.Instance.UpdateUI();
 
@@ -131,6 +134,15 @@ public class GameManager : MonoBehaviour, IUIHandler
     {
         Time.timeScale = 1f;
         UIManager.Instance.ClosePauseMenu();
+    }
+
+    private void SetHiScore()
+    {
+
+        if (PlayerPrefs.HasKey("BB-HiScore"))
+        {
+            hiScore.Value = PlayerPrefs.GetInt("BB-HiScore");
+        }
     }
 
 
