@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour, IUIHandler
     [SerializeField] private TMP_Text hpText;
     [SerializeField] private TMP_Text hiScoreText;
     [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text levelText;
 
     public delegate void UIEvent();
     public UIEvent CountdownFinished;
@@ -77,6 +78,7 @@ public class UIManager : MonoBehaviour, IUIHandler
         hiScoreText.text = $"HiScore: {hiScore.Value}";
         scoreText.text = $"Score: {score.Value}";
         hpText.text = $"{hp.Value} x ";
+        levelText.text = $"Level: {LevelManager.Instance.Level}";
 
     }
 
@@ -86,6 +88,7 @@ public class UIManager : MonoBehaviour, IUIHandler
         hpText.gameObject.SetActive(true);
         hiScoreText.gameObject.SetActive(true);
         scoreText.gameObject.SetActive(true);
+        levelText.gameObject.SetActive(true);
 
         cdGo.SetActive(true);
     }
@@ -96,6 +99,7 @@ public class UIManager : MonoBehaviour, IUIHandler
         hpText.gameObject.SetActive(false);
         hiScoreText.gameObject.SetActive(false);
         scoreText.gameObject.SetActive(false);
+        levelText.gameObject.SetActive(false);
     }
 
     void CountDown()

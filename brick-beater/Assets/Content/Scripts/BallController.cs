@@ -128,7 +128,7 @@ public class BallController : MonoBehaviour
     IEnumerator horizontalCheck()
     {
         //Debug.Log($"At: {this}, started horizontalCheck, vel: {rigidbody.velocity}");
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3.5f);
 
         if (rb.velocity.x == 0)
         {
