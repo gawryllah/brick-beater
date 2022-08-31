@@ -31,7 +31,7 @@ public class BallController : MonoBehaviour
     {
         startPosition = transform.position;
         minSpeed = 65f;
-        maxSpeed = 250f;
+        maxSpeed = 200f;
     }
 
 
@@ -69,9 +69,9 @@ public class BallController : MonoBehaviour
         {
             if (canLoseHP)
             {
-
-                TouchedGround.Invoke();
                 canLoseHP = false;
+                TouchedGround.Invoke();
+                
                 StartCoroutine(TakeDamageDelay(true, 1.5f));
             }
         }

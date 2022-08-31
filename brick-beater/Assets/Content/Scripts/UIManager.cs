@@ -42,6 +42,7 @@ public class UIManager : MonoBehaviour, IUIHandler
         InitUI();
 
         BallController.BallSpawned += CountDown;
+        LevelManager.Instance.LevelLoaded += CountDown;
     }
 
     public void Resume()

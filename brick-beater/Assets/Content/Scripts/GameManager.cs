@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour, IUIHandler
     [SerializeField] private IntSO hiScore;
     [SerializeField] private IntSO score;
     [SerializeField] private IntSO hp;
+    [SerializeField] private int startingHP;
 
 
     [SerializeField] private GameObject ballPrefab;
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour, IUIHandler
 
         GameOn = false;
 
-        hp.Value = 5;
+        hp.Value = startingHP;
         score.Value = 0;
 
 
@@ -56,11 +57,8 @@ public class GameManager : MonoBehaviour, IUIHandler
 
     void StartGame()
     {
-
-
         Instantiate(ballPrefab);
         UIManager.Instance.UpdateUI();
-
     }
 
     void LoseHealth()
@@ -69,6 +67,14 @@ public class GameManager : MonoBehaviour, IUIHandler
         UIManager.Instance.UpdateUI();
         //Debug.Log($"hp: {hp.Value}");
         CheckHP();
+    }
+
+    public void AddHealth()
+    {
+        //Debug.Log($"hp: {hp.Value}");
+        hp.Value += 1;
+        //Debug.Log($"hp gained: {hp.Value}");
+        UIManager.Instance.UpdateUI();
     }
 
     void CheckHP()

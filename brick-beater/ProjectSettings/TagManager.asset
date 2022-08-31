@@ -9,6 +9,7 @@ TagManager:
   - Paddle
   - Brick
   - Ball
+  - Heart
   layers:
   - Default
   - TransparentFX
@@ -22,8 +23,8 @@ TagManager:
   - 
   - Ball
   - Brick
-  - 
-  - 
+  - Paddle
+  - PowerUp
   - 
   - 
   - 

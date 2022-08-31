@@ -8,6 +8,9 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private int level; public int Level { get { return level; } }
 
+    public delegate void LevelEvenets();
+    public LevelEvenets LevelLoaded; 
+
     private void Awake()
     {
         if (instance != null && instance != this)

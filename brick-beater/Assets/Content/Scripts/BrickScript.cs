@@ -1,7 +1,13 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BrickScript : MonoBehaviour
 {
+    private static bool canRespPowerup;
+    private static bool isCooldownStarted;
+    [SerializeField] private List<GameObject> powerupList = new List<GameObject>();
+
     private SpriteRenderer sr;
     [SerializeField] private int hits;
     Color orange = new Color(255, 165, 0, 1);
@@ -9,6 +15,8 @@ public class BrickScript : MonoBehaviour
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        canRespPowerup = true;
+        isCooldownStarted = false;
     }
 
 
@@ -47,12 +55,42 @@ public class BrickScript : MonoBehaviour
         {
             BrickManager.Instance.DeleteBrickFromList(this.gameObject);
             //Debug.Log($"At {this.GetInstanceID()}, {hits}");
+            var pos = transform.position;
             Destroy(this.gameObject);
+            DrawPowerUp(pos);
+           
             GameManager.Instance.AddScore();
             BrickManager.Instance.CheckBricksOnScene();
 
         }
     }
+
+    void DrawPowerUp(Vector2 pos)
+    {
+        if (canRespPowerup)
+        {
+            if(Random.Range(0f, 1f) < 0.5f)
+            {
+                Debug.Log("Powerup resped");
+                Instantiate(powerupList[Random.Range(0, powerupList.Count)], pos, Quaternion.identity);
+                canRespPowerup = false;
+                isCooldownStarted = true;
+                StartCoroutine(PowerUpCooldown());
+            }
+        }
+    }
+
+    static IEnumerator PowerUpCooldown()
+    {
+        if (!isCooldownStarted)
+        {
+            yield return new WaitForSeconds(10f);
+            canRespPowerup = true;
+            isCooldownStarted = false;
+        }
+    }
+
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
