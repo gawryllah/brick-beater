@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BrickScript : MonoBehaviour
@@ -58,7 +57,7 @@ public class BrickScript : MonoBehaviour
             var pos = transform.position;
             Destroy(this.gameObject);
             DrawPowerUp(pos);
-           
+
             GameManager.Instance.AddScore();
             BrickManager.Instance.CheckBricksOnScene();
 
@@ -69,7 +68,7 @@ public class BrickScript : MonoBehaviour
     {
         if (canRespPowerup)
         {
-            if(Random.Range(0f, 1f) < 0.5f)
+            if (Random.Range(0f, 1f) < 0.5f)
             {
                 Debug.Log("Powerup resped");
                 Instantiate(GameManager.Instance.PowerUpsList[Random.Range(0, GameManager.Instance.PowerUpsList.Count)], pos, Quaternion.identity);

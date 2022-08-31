@@ -93,7 +93,7 @@ public class PaddleController : MonoBehaviour
         }
     }
 
-    
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -103,7 +103,8 @@ public class PaddleController : MonoBehaviour
             Destroy(collision.gameObject);
             GameManager.Instance.AddHealth();
 
-        }else if (collision.gameObject.tag == "Speed")
+        }
+        else if (collision.gameObject.tag == "Speed")
         {
             Debug.Log("speed trigger detected");
             Destroy(collision.gameObject);
@@ -118,5 +119,5 @@ public class PaddleController : MonoBehaviour
         controlsStats.Speed = startingSpeed;
 
     }
- 
+
 }

@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PowerupScript : MonoBehaviour
 {
-    enum PowerupLabel{ HEAL, SPEED };
+    enum PowerupLabel { HEAL, SPEED };
 
     [SerializeField] private PowerupLabel powerupLabel;
 
@@ -13,7 +11,7 @@ public class PowerupScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+
     }
 
     private void FixedUpdate()

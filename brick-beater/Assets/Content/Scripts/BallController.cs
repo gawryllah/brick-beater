@@ -71,7 +71,7 @@ public class BallController : MonoBehaviour
             {
                 canLoseHP = false;
                 TouchedGround.Invoke();
-                
+
                 StartCoroutine(TakeDamageDelay(true, 1.5f));
             }
         }
