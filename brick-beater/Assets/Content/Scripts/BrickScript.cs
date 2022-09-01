@@ -98,7 +98,6 @@ public class BrickScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ball")
         {
-            Debug.Log("Ball touched");
             TakeDamage();
         }
     }
