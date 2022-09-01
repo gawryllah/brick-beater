@@ -89,7 +89,6 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void UpdatedDataPersistanceObj()
     {
-        Debug.Log("updated");
         dataPersistanceObj = FindAllDataPersistenceObjects();
     }
 

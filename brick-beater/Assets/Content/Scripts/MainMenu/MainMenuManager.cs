@@ -75,8 +75,6 @@ public class MainMenuManager : MonoBehaviour
         gameLoaded.Value = true;
         SceneManager.LoadScene("GameScene");
         OnLoadGame?.Invoke();
-        //DataPersistenceManager.Instance.LoadGame();
-
     }
 
     public void InstructionView()

@@ -184,6 +184,7 @@ public class BrickManager : MonoBehaviour, IDataPersistence
 
     public void CreateNewLevel()
     {
+        bricksList.Clear();
 
         rows = finalRows;
         cols = finalCols;
@@ -225,11 +226,22 @@ public class BrickManager : MonoBehaviour, IDataPersistence
 
             CreateNewLevel();
         }
+        else if (GameObject.FindGameObjectsWithTag("Brick").Length == 0)
+        {
+            GameManager.Instance.RestartBall();
+            LevelManager.Instance.LevelUp();
+
+            foreach (var obj in GameObject.FindObjectsOfType<PowerupScript>())
+            {
+                Destroy(obj);
+            }
+
+            CreateNewLevel();
+        }
     }
 
     void InitLoad()
     {
-        Debug.Log("Init Load");
         DataPersistenceManager.Instance.UpdatedDataPersistanceObj();
         DataPersistenceManager.Instance.LoadGame();
     }
@@ -241,8 +253,8 @@ public class BrickManager : MonoBehaviour, IDataPersistence
 
         foreach (var go in bricksList)
         {
-            Debug.Log($"{go.name}, {go.transform.position}, {go.GetComponent<BrickScript>().Hits}");
-            bricksDataList.Add(new BrickData(go.transform.position, go.GetComponent<BrickScript>().Hits));
+            if (go.GetComponent<BrickScript>() != null)
+                bricksDataList.Add(new BrickData(go.transform.position, go.GetComponent<BrickScript>().Hits, go.transform.localScale));
         }
 
         return bricksDataList;
@@ -254,6 +266,7 @@ public class BrickManager : MonoBehaviour, IDataPersistence
         foreach (var brickData in brickDatas)
         {
             var go = Instantiate(brickPrefab, brickData.position, Quaternion.identity);
+            go.transform.localScale = brickData.scale;
             go.GetComponent<BrickScript>().SetHits(brickData.hits);
             bricksList.Add(go);
         }
@@ -262,8 +275,6 @@ public class BrickManager : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
-        //bricksList = data.bricks;
-
         LoadFromData(data.bricksData);
     }
 
