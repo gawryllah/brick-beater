@@ -115,7 +115,8 @@ public class GameManager : MonoBehaviour, IUIHandler, IDataPersistence
     {
         PauseGame();
         GameOn = false;
-        ballGO.GetComponent<BallController>().RestartBall();
+        if(ballGO.GetComponent<BallController>() != null)
+            ballGO.GetComponent<BallController>().RestartBall();
     }
 
     public void PauseGame()

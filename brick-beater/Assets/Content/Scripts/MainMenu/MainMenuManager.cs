@@ -69,7 +69,6 @@ public class MainMenuManager : MonoBehaviour
 
     public void LoadGame()
     {
-        Debug.Log("Loaded Game");
         newGame = true;
         StopAllCoroutines();
         gameLoaded.Value = true;

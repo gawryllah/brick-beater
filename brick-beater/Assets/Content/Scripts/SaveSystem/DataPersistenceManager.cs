@@ -40,22 +40,10 @@ public class DataPersistenceManager : MonoBehaviour
         LoadGame();
     }
 
-    public void NewGame()
-    {
-
-        gameData = new GameData();
-    }
 
     public void LoadGame()
     {
         gameData = dataHandler.Load();
-        /*
-        if (gameData == null)
-        {
-            Debug.LogError("ESSA WARIACIE NO DATA");
-            NewGame();
-        }
-        */
 
         UpdatedDataPersistanceObj();
 
@@ -94,7 +82,6 @@ public class DataPersistenceManager : MonoBehaviour
 
     public bool IsGameSaved()
     {
-        Debug.Log(dataHandler.IsGameSaved());
         return dataHandler.IsGameSaved();
     }
 
