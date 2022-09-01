@@ -14,28 +14,27 @@ public class PaddleController : MonoBehaviour
 
     private void Awake()
     {
-        playerControls = new PlayerControls();
+        //DontDestroyOnLoad(this);
     }
 
     private void OnEnable()
     {
+        playerControls = new PlayerControls();
+
         playerControls.Enable();
         baseSpeed = controlsStats.Speed;
+
+        baseWidth = transform.localScale.x;
+        height = transform.position.y;
+
+        startingPos = transform.position;
+
+        BrickManager.Instance.OnSpawnedBricks += RestartPos;
     }
 
     private void OnDisable()
     {
         playerControls.Disable();
-    }
-
-    private void Start()
-    {
-        baseWidth = transform.localScale.x;
-        height = transform.position.y;
- 
-        startingPos = transform.position;
-
-        BrickManager.Instance.OnSpawnedBricks += RestartPos;
     }
 
 
@@ -93,8 +92,9 @@ public class PaddleController : MonoBehaviour
 
     void RestartPos()
     {
+        if (startingPos != null)
+            transform.position = startingPos;
 
-        transform.position = startingPos;
         baseSpeed = controlsStats.Speed;
     }
 
@@ -115,7 +115,8 @@ public class PaddleController : MonoBehaviour
             //Debug.Log("speed trigger detected");
             Destroy(collision.gameObject);
             StartCoroutine(speedUp());
-        }else if (collision.gameObject.tag == "Shroom")
+        }
+        else if (collision.gameObject.tag == "Shroom")
         {
             Destroy(collision.gameObject);
             var width = transform.localScale;
@@ -129,7 +130,7 @@ public class PaddleController : MonoBehaviour
 
     private IEnumerator speedUp()
     {
-        
+
         baseSpeed *= 2f;
         yield return new WaitForSeconds(6f);
         baseSpeed = controlsStats.Speed;
@@ -139,7 +140,7 @@ public class PaddleController : MonoBehaviour
     private IEnumerator expandCD()
     {
         yield return new WaitForSeconds(5f);
-        transform.localScale = new Vector3(baseWidth, transform.localScale.y, transform.localScale.z);   
+        transform.localScale = new Vector3(baseWidth, transform.localScale.y, transform.localScale.z);
     }
 
 

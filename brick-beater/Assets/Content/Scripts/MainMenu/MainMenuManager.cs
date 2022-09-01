@@ -1,10 +1,13 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
-using System.Collections;
 
 public class MainMenuManager : MonoBehaviour
 {
+    public delegate void MainMenuEvents();
+    public static event MainMenuEvents OnPlayGame;
+
     private static MainMenuManager instance;
 
     public static MainMenuManager Instance { get { return instance; } }
@@ -25,7 +28,7 @@ public class MainMenuManager : MonoBehaviour
             instance = this;
         }
 
-        DontDestroyOnLoad(instance);
+        //DontDestroyOnLoad(instance);
 
         if (PlayerPrefs.HasKey("BB-HiScore"))
         {
@@ -48,6 +51,7 @@ public class MainMenuManager : MonoBehaviour
         newGame = true;
         StopAllCoroutines();
         SceneManager.LoadScene("GameScene");
+        OnPlayGame?.Invoke();
 
     }
 
@@ -63,7 +67,7 @@ public class MainMenuManager : MonoBehaviour
 
     private IEnumerator logoAnim()
     {
-        
+
         while (!newGame)
         {
             yield return new WaitForSeconds(1.75f);

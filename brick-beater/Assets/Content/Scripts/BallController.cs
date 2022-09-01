@@ -24,16 +24,34 @@ public class BallController : MonoBehaviour
         canLoseHP = true;
         bubble.SetActive(false);
 
-        UIManager.Instance.CountdownFinished += InitBall;
-    }
 
-    private void Start()
-    {
+
         startPosition = transform.position;
         minSpeed = 65f;
         maxSpeed = 200f;
+
+
+
+        //UIManager.Instance.CountdownFinished += InitBall;
+        //GameManager.Instance.OnCountdownEnd += InitBall;
     }
 
+    private void OnEnable()
+    {
+
+        rb = GetComponent<Rigidbody2D>();
+        BallSpawned?.Invoke();
+
+        GameManager.Instance.OnBallSpawned += RestartBall;
+        UIManager.Instance.CountdownFinished += InitBall;
+
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnBallSpawned -= RestartBall;
+        UIManager.Instance.CountdownFinished -= InitBall;
+    }
 
     private void FixedUpdate()
     {
@@ -147,22 +165,15 @@ public class BallController : MonoBehaviour
         GameManager.Instance.GameOn = true;
 
 
-        rb.AddForce(Vector2.down.normalized * speed, ForceMode2D.Impulse);
+        rb.AddForce(Vector2.down.normalized * speed / 2, ForceMode2D.Impulse);
 
     }
 
     public void RestartBall()
     {
+        rb.velocity = Vector2.zero;
         transform.position = startPosition;
+
         BallSpawned?.Invoke();
     }
-
-    private void OnEnable()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        BallSpawned?.Invoke();
-
-    }
-
-
 }

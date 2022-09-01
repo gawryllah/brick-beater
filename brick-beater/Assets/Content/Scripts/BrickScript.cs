@@ -70,7 +70,6 @@ public class BrickScript : MonoBehaviour
         {
             if (Random.Range(0f, 1f) < 0.5f)
             {
-                Debug.Log("Powerup resped");
                 Instantiate(GameManager.Instance.PowerUpsList[Random.Range(0, GameManager.Instance.PowerUpsList.Count)], pos, Quaternion.identity);
                 canRespPowerup = false;
                 isCooldownStarted = true;

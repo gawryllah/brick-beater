@@ -37,6 +37,9 @@ public class BrickManager : MonoBehaviour
 
     [SerializeField] private List<GameObject> bricksList = new List<GameObject>();
 
+    private Vector2 startingPos;
+    private Vector2 spawnPos;
+
 
     private void Awake()
     {
@@ -58,42 +61,54 @@ public class BrickManager : MonoBehaviour
         finalCols = cols;
         finalRows = rows;
 
+
+
+
+    }
+
+    private void OnEnable()
+    {
         cols += LevelManager.Instance.Level - 1;
         rows += LevelManager.Instance.Level - 1;
+        MainMenuManager.OnPlayGame += CreateNewLevel;
+    }
+
+    private void OnDisable()
+    {
+        MainMenuManager.OnPlayGame -= CreateNewLevel;
     }
 
     private void Start()
     {
+        startingPos = new Vector2(-(bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //left side
+        spawnPos = startingPos;
+
         CreateNewLevel();
     }
 
+
+
     void GenerateBricks()
     {
+        startingPos = new Vector2(-(bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //left side
+        spawnPos = startingPos;
 
 
-        var startingPos = new Vector2(-(bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //left side
-        var spawnPos = startingPos;
-
-        // Debug.Log($"x:{brickWidth}, y: {brickHeight}, deltaX {widthDelta}, deltaY {heightDelta}");
 
         for (int i = 0; i < rows; i++)
         {
-
             for (int j = 0; j < cols; j++)
             {
-                //Debug.Log($"1 for, i: {i}, j: {j}");
                 if (bricksMap[i, j] != 0)
                 {
                     var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
-                    go.transform.SetParent(bricksParent.transform);
+                    //go.transform.SetParent(bricksParent.transform);
                     if (go.GetComponent<BrickScript>() != null)
                     {
                         go.GetComponent<BrickScript>().SetHits(bricksMap[i, j]);
                     }
                 }
                 spawnPos.y -= heightDelta;
-
-
             }
 
             //if (i < cols - 1)
@@ -105,25 +120,21 @@ public class BrickManager : MonoBehaviour
         startingPos = new Vector2((bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //right side
         spawnPos = startingPos;
 
-
         for (int i = 0; i < rows; i++)
         {
-
             for (int j = 0; j < cols; j++)
             {
                 //Debug.Log($"1 for, i: {i}, j: {j}");
                 if (bricksMap[i, j] != 0)
                 {
                     var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
-                    go.transform.SetParent(bricksParent.transform);
+                    //go.transform.SetParent(bricksParent.transform);
                     if (go.GetComponent<BrickScript>() != null)
                     {
                         go.GetComponent<BrickScript>().SetHits(bricksMap[i, j]);
                     }
                 }
                 spawnPos.y -= heightDelta;
-
-
             }
 
             //if (i < cols - 1)
@@ -159,9 +170,6 @@ public class BrickManager : MonoBehaviour
             for (int j = 0; j < cols; j++)
             {
                 bricksMap[i, j] = (int)Random.Range(0, 5);
-
-
-                //Debug.Log($"row {j}, col {i}, val: {bricksMap[j, i]}");
             }
         }
 
@@ -170,6 +178,7 @@ public class BrickManager : MonoBehaviour
 
     public void CreateNewLevel()
     {
+        Debug.Log("CREATE NEW LEVEL");
         rows = finalRows;
         cols = finalCols;
 
@@ -190,8 +199,6 @@ public class BrickManager : MonoBehaviour
         cols /= 2;
 
         GenerateBricks();
-
-
     }
 
     public void AddToBricksList(GameObject obj)
@@ -208,17 +215,15 @@ public class BrickManager : MonoBehaviour
     {
         if (bricksList.Count == 0)
         {
-            Debug.Log($"Level finished! Level: {LevelManager.Instance.Level}");
             GameManager.Instance.RestartBall();
             LevelManager.Instance.LevelUp();
 
-            foreach(var obj in GameObject.FindObjectsOfType<PowerupScript>())
+            foreach (var obj in GameObject.FindObjectsOfType<PowerupScript>())
             {
                 Destroy(obj);
             }
 
             CreateNewLevel();
-
         }
     }
 
