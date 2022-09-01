@@ -106,14 +106,13 @@ public class PaddleController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Heart")
         {
-            //Debug.Log("heal trigger detected");
             Destroy(collision.gameObject);
             GameManager.Instance.AddHealth();
 
         }
         else if (collision.gameObject.tag == "Speed")
         {
-            //Debug.Log("speed trigger detected");
+
             Destroy(collision.gameObject);
             StartCoroutine(speedUp());
         }

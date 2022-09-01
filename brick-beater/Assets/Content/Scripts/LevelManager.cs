@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : MonoBehaviour, IDataPersistence
 {
     private static LevelManager instance;
 
@@ -29,7 +29,16 @@ public class LevelManager : MonoBehaviour
 
     public void LevelUp()
     {
-        this.level++;
+        level++;
     }
 
+    public void LoadData(GameData data)
+    {
+        level = data.level;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.level = level;
+    }
 }

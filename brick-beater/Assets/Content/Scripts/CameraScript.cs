@@ -8,7 +8,7 @@ public class CameraScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        float screenRatio = (float)Screen.width / (float)Screen.height;
+        float screenRatio = Screen.width / (float)Screen.height;
         float targetRatio = outline.bounds.size.x / outline.bounds.size.y;
 
         if (screenRatio >= targetRatio)

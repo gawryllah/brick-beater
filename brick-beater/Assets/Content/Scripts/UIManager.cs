@@ -73,7 +73,7 @@ public class UIManager : MonoBehaviour, IUIHandler
 
     public void Save()
     {
-
+        DataPersistenceManager.Instance.SaveGame();
     }
 
     public void QuitToMenu()

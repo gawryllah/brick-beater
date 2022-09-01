@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour, IUIHandler
+public class GameManager : MonoBehaviour, IUIHandler, IDataPersistence
 {
     public delegate void GameManagerEvents();
     public GameManagerEvents OnRunOutOHP;
@@ -149,5 +149,17 @@ public class GameManager : MonoBehaviour, IUIHandler
         }
     }
 
+    public void LoadData(GameData data)
+    {
+        Debug.Log($"GM LOADING SCORE {data.score}, HP {data.hp}");
+        score.Value = data.score;
+        hp.Value = data.hp;
+    }
 
+    public void SaveData(ref GameData data)
+    {
+        Debug.Log($"GM SAVING SCORE {score.Value}, HP {hp.Value}");
+        data.score = score.Value;
+        data.hp = hp.Value;
+    }
 }

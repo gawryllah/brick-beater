@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BrickManager : MonoBehaviour
+public class BrickManager : MonoBehaviour, IDataPersistence
 {
 
     public delegate void SpawnedBricks();
@@ -14,6 +14,8 @@ public class BrickManager : MonoBehaviour
     private SpriteRenderer areaSR;
     private float areaWidth;
     private float areaHeight;
+
+    [SerializeField] private BoolSO IsGameLoaded;
 
     [SerializeField] private GameObject bricksArea;
     [SerializeField] private GameObject brickPrefab;
@@ -69,13 +71,16 @@ public class BrickManager : MonoBehaviour
         rows += LevelManager.Instance.Level - 1;
         bricksAreaPos = bricksArea.transform.position;
 
+
         MainMenuManager.OnPlayGame += CreateNewLevel;
+        MainMenuManager.OnLoadGame += InitLoad;
 
     }
 
     private void OnDisable()
     {
         MainMenuManager.OnPlayGame -= CreateNewLevel;
+        MainMenuManager.OnLoadGame -= InitLoad;
     }
 
     private void Start()
@@ -83,7 +88,14 @@ public class BrickManager : MonoBehaviour
         startingPos = new Vector2(-(bricksAreaPos.x + areaWidth / 2), (bricksAreaPos.y + areaHeight / 2)); //left side
         spawnPos = startingPos;
 
-        CreateNewLevel();
+        if (IsGameLoaded.Value)
+        {
+            InitLoad();
+        }
+        else
+        {
+            CreateNewLevel();
+        }
     }
 
 
@@ -163,7 +175,7 @@ public class BrickManager : MonoBehaviour
         {
             for (int j = 0; j < cols; j++)
             {
-                bricksMap[i, j] = (int)Random.Range(0, 5);
+                bricksMap[i, j] = Random.Range(0, 5);
             }
         }
 
@@ -215,4 +227,48 @@ public class BrickManager : MonoBehaviour
         }
     }
 
+    void InitLoad()
+    {
+        Debug.Log("Init Load");
+        DataPersistenceManager.Instance.UpdatedDataPersistanceObj();
+        DataPersistenceManager.Instance.LoadGame();
+    }
+
+    private List<BrickData> GetBricksDataFromList()
+    {
+
+        List<BrickData> bricksDataList = new List<BrickData>();
+
+        foreach (var go in bricksList)
+        {
+            Debug.Log($"{go.name}, {go.transform.position}, {go.GetComponent<BrickScript>().Hits}");
+            bricksDataList.Add(new BrickData(go.transform.position, go.GetComponent<BrickScript>().Hits));
+        }
+
+        return bricksDataList;
+    }
+
+    private void LoadFromData(List<BrickData> brickDatas)
+    {
+        bricksList.Clear();
+        foreach (var brickData in brickDatas)
+        {
+            var go = Instantiate(brickPrefab, brickData.position, Quaternion.identity);
+            go.GetComponent<BrickScript>().SetHits(brickData.hits);
+            bricksList.Add(go);
+        }
+        OnSpawnedBricks?.Invoke();
+    }
+
+    public void LoadData(GameData data)
+    {
+        //bricksList = data.bricks;
+
+        LoadFromData(data.bricksData);
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.bricksData = GetBricksDataFromList();
+    }
 }

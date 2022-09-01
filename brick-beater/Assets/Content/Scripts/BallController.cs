@@ -29,11 +29,6 @@ public class BallController : MonoBehaviour
         startPosition = transform.position;
         minSpeed = 65f;
         maxSpeed = 200f;
-
-
-
-        //UIManager.Instance.CountdownFinished += InitBall;
-        //GameManager.Instance.OnCountdownEnd += InitBall;
     }
 
     private void OnEnable()
@@ -100,7 +95,7 @@ public class BallController : MonoBehaviour
     {
         bubble.SetActive(true);
         yield return new WaitForSeconds(time);
-        this.canLoseHP = value;
+        canLoseHP = value;
         bubble.SetActive(false);
     }
 

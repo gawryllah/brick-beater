@@ -7,13 +7,18 @@ public class MainMenuManager : MonoBehaviour
 {
     public delegate void MainMenuEvents();
     public static event MainMenuEvents OnPlayGame;
+    public static event MainMenuEvents OnLoadGame;
 
     private static MainMenuManager instance;
 
     public static MainMenuManager Instance { get { return instance; } }
 
+    [SerializeField] private BoolSO gameLoaded;
+
     [SerializeField] private GameObject logo;
     [SerializeField] private TMP_Text hiScoreText;
+
+    [SerializeField] private GameObject continueBtn;
 
     private bool newGame;
 
@@ -41,16 +46,36 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
+        if (DataPersistenceManager.Instance.IsGameSaved())
+        {
+            continueBtn.SetActive(true);
+        }
+        else
+        {
+            continueBtn.SetActive(false);
+        }
         StartCoroutine(logoAnim());
     }
 
-    public void LoadGame()
+    public void PlayGame()
     {
         newGame = true;
         StopAllCoroutines();
         OnPlayGame?.Invoke();
+        gameLoaded.Value = false;
         SceneManager.LoadScene("GameScene");
+    }
 
+
+    public void LoadGame()
+    {
+        Debug.Log("Loaded Game");
+        newGame = true;
+        StopAllCoroutines();
+        gameLoaded.Value = true;
+        SceneManager.LoadScene("GameScene");
+        OnLoadGame?.Invoke();
+        //DataPersistenceManager.Instance.LoadGame();
 
     }
 

@@ -5,10 +5,9 @@ public class BrickScript : MonoBehaviour
 {
     private static bool canRespPowerup;
     private static bool isCooldownStarted;
-    //[SerializeField] private List<GameObject> powerupList = new List<GameObject>();
 
     private SpriteRenderer sr;
-    [SerializeField] private int hits;
+    [SerializeField] private int hits; public int Hits { get { return hits; } }
 
     private void Awake()
     {
@@ -19,7 +18,7 @@ public class BrickScript : MonoBehaviour
 
     private void OnEnable()
     {
-        BrickManager.Instance.AddToBricksList(this.gameObject);
+        BrickManager.Instance.AddToBricksList(gameObject);
     }
 
     private void OnDestroy()
@@ -60,9 +59,9 @@ public class BrickScript : MonoBehaviour
     {
         if (hits <= 0)
         {
-            BrickManager.Instance.DeleteBrickFromList(this.gameObject);
+            BrickManager.Instance.DeleteBrickFromList(gameObject);
             var pos = transform.position;
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             DrawPowerUp(pos);
 
         }
