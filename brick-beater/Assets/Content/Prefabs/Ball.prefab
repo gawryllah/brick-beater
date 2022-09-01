@@ -140,6 +140,8 @@ MonoBehaviour:
   speed: 7
   canLoseHP: 0
   bubble: {fileID: 5720470341923948695}
+  minSpeed: 0
+  maxSpeed: 0
 --- !u!1 &5720470341923948695
 GameObject:
   m_ObjectHideFlags: 0

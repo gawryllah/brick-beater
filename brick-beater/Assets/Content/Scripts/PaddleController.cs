@@ -12,10 +12,7 @@ public class PaddleController : MonoBehaviour
     private float baseSpeed;
     private float baseWidth;
 
-    private void Awake()
-    {
-        //DontDestroyOnLoad(this);
-    }
+    private AudioSource ac;
 
     private void OnEnable()
     {
@@ -30,6 +27,10 @@ public class PaddleController : MonoBehaviour
         startingPos = transform.position;
 
         BrickManager.Instance.OnSpawnedBricks += RestartPos;
+
+        ac = GetComponent<AudioSource>();
+        ac.loop = false;
+        ac.playOnAwake = false;
     }
 
     private void OnDisable()
@@ -106,18 +107,20 @@ public class PaddleController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Heart")
         {
+            ac.Play();
             Destroy(collision.gameObject);
             GameManager.Instance.AddHealth();
 
         }
         else if (collision.gameObject.tag == "Speed")
         {
-
+            ac.Play();
             Destroy(collision.gameObject);
             StartCoroutine(speedUp());
         }
         else if (collision.gameObject.tag == "Shroom")
         {
+            ac.Play();
             Destroy(collision.gameObject);
             var width = transform.localScale;
 

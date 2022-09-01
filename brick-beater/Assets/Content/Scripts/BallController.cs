@@ -18,6 +18,8 @@ public class BallController : MonoBehaviour
     public static BallEvent TouchedGround;
     public static BallEvent BallSpawned;
 
+    //private AudioSource ac;
+
     private void Awake()
     {
 
@@ -29,11 +31,14 @@ public class BallController : MonoBehaviour
         startPosition = transform.position;
         minSpeed = 65f;
         maxSpeed = 200f;
+
+
     }
 
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody2D>();
+
         BallSpawned?.Invoke();
 
         GameManager.Instance.OnBallSpawned += RestartBall;
