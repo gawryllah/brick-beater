@@ -20,6 +20,9 @@ public class MainMenuManager : MonoBehaviour
 
     [SerializeField] private GameObject continueBtn;
 
+    [SerializeField] private GameObject mainView;
+    [SerializeField] private GameObject instrctionView;
+
     private bool newGame;
 
     private void Awake()
@@ -78,7 +81,14 @@ public class MainMenuManager : MonoBehaviour
 
     public void InstructionView()
     {
+        mainView.SetActive(false);
+        instrctionView.SetActive(true);
+    }
 
+    public void GoBack()
+    {
+        mainView.SetActive(true);
+        instrctionView.SetActive(false);
     }
 
     public void QuitGame()
