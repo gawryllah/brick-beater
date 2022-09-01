@@ -39,6 +39,7 @@ public class BrickManager : MonoBehaviour
 
     private Vector2 startingPos;
     private Vector2 spawnPos;
+    private Vector2 bricksAreaPos;
 
 
     private void Awake()
@@ -60,17 +61,16 @@ public class BrickManager : MonoBehaviour
 
         finalCols = cols;
         finalRows = rows;
-
-
-
-
     }
 
     private void OnEnable()
     {
         cols += LevelManager.Instance.Level - 1;
         rows += LevelManager.Instance.Level - 1;
+        bricksAreaPos = bricksArea.transform.position;
+
         MainMenuManager.OnPlayGame += CreateNewLevel;
+
     }
 
     private void OnDisable()
@@ -80,7 +80,7 @@ public class BrickManager : MonoBehaviour
 
     private void Start()
     {
-        startingPos = new Vector2(-(bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //left side
+        startingPos = new Vector2(-(bricksAreaPos.x + areaWidth / 2), (bricksAreaPos.y + areaHeight / 2)); //left side
         spawnPos = startingPos;
 
         CreateNewLevel();
@@ -90,10 +90,9 @@ public class BrickManager : MonoBehaviour
 
     void GenerateBricks()
     {
-        startingPos = new Vector2(-(bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //left side
+
+        startingPos = new Vector2(-(bricksAreaPos.x + areaWidth / 2), (bricksAreaPos.y + areaHeight / 2)); //left side
         spawnPos = startingPos;
-
-
 
         for (int i = 0; i < rows; i++)
         {
@@ -102,7 +101,6 @@ public class BrickManager : MonoBehaviour
                 if (bricksMap[i, j] != 0)
                 {
                     var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
-                    //go.transform.SetParent(bricksParent.transform);
                     if (go.GetComponent<BrickScript>() != null)
                     {
                         go.GetComponent<BrickScript>().SetHits(bricksMap[i, j]);
@@ -111,24 +109,21 @@ public class BrickManager : MonoBehaviour
                 spawnPos.y -= heightDelta;
             }
 
-            //if (i < cols - 1)
             spawnPos.x += widthDelta;
 
             spawnPos.y = startingPos.y;
         }
 
-        startingPos = new Vector2((bricksArea.transform.position.x + areaWidth / 2), (bricksArea.transform.position.y + areaHeight / 2)); //right side
+        startingPos = new Vector2((bricksAreaPos.x + areaWidth / 2), (bricksAreaPos.y + areaHeight / 2)); //right side
         spawnPos = startingPos;
 
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < cols; j++)
             {
-                //Debug.Log($"1 for, i: {i}, j: {j}");
                 if (bricksMap[i, j] != 0)
                 {
                     var go = Instantiate(brickPrefab, spawnPos, Quaternion.identity);
-                    //go.transform.SetParent(bricksParent.transform);
                     if (go.GetComponent<BrickScript>() != null)
                     {
                         go.GetComponent<BrickScript>().SetHits(bricksMap[i, j]);
@@ -137,7 +132,6 @@ public class BrickManager : MonoBehaviour
                 spawnPos.y -= heightDelta;
             }
 
-            //if (i < cols - 1)
             spawnPos.x -= widthDelta;
 
             spawnPos.y = startingPos.y;
@@ -178,7 +172,7 @@ public class BrickManager : MonoBehaviour
 
     public void CreateNewLevel()
     {
-        Debug.Log("CREATE NEW LEVEL");
+
         rows = finalRows;
         cols = finalCols;
 
@@ -186,14 +180,8 @@ public class BrickManager : MonoBehaviour
         rows += LevelManager.Instance.Level - 1;
 
         SetBricksSize();
-        if (listOfBricksMaps.Count == LevelManager.Instance.Level)
-        {
-            bricksMap = listOfBricksMaps[LevelManager.Instance.Level - 1];
-        }
-        else
-        {
-            InitBrickMap();
-        }
+
+        InitBrickMap();
 
         rows /= 2;
         cols /= 2;

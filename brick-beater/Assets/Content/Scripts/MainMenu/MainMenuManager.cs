@@ -28,8 +28,6 @@ public class MainMenuManager : MonoBehaviour
             instance = this;
         }
 
-        //DontDestroyOnLoad(instance);
-
         if (PlayerPrefs.HasKey("BB-HiScore"))
         {
             hiScoreText.text = $"HiScore: {PlayerPrefs.GetInt("BB-HiScore")}";
@@ -50,8 +48,9 @@ public class MainMenuManager : MonoBehaviour
     {
         newGame = true;
         StopAllCoroutines();
-        SceneManager.LoadScene("GameScene");
         OnPlayGame?.Invoke();
+        SceneManager.LoadScene("GameScene");
+
 
     }
 
@@ -70,9 +69,9 @@ public class MainMenuManager : MonoBehaviour
 
         while (!newGame)
         {
-            yield return new WaitForSeconds(1.75f);
+            yield return new WaitForSecondsRealtime(1.75f);
             logo.SetActive(false);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSecondsRealtime(1f);
             logo.SetActive(true);
         }
     }

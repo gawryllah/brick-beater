@@ -35,6 +35,7 @@ public class PaddleController : MonoBehaviour
     private void OnDisable()
     {
         playerControls.Disable();
+        BrickManager.Instance.OnSpawnedBricks -= RestartPos;
     }
 
 

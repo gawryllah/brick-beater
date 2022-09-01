@@ -9,13 +9,23 @@ public class BrickScript : MonoBehaviour
 
     private SpriteRenderer sr;
     [SerializeField] private int hits;
-    Color orange = new Color(255, 165, 0, 1);
 
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
         canRespPowerup = true;
         isCooldownStarted = false;
+    }
+
+    private void OnEnable()
+    {
+        BrickManager.Instance.AddToBricksList(this.gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.AddScore();
+        BrickManager.Instance.CheckBricksOnScene();
     }
 
 
@@ -41,11 +51,9 @@ public class BrickScript : MonoBehaviour
         {
             case 1: sr.color = Color.blue; break;
             case 2: sr.color = Color.yellow; break;
-            case 3: sr.color = orange; break;
-            case 4: sr.color = Color.red; break;
-
+            case 3: sr.color = Color.red; break;
+            case 4: sr.color = Color.magenta; break;
         }
-
     }
 
     void CheckIfCanPlay(int hits)
@@ -53,13 +61,9 @@ public class BrickScript : MonoBehaviour
         if (hits <= 0)
         {
             BrickManager.Instance.DeleteBrickFromList(this.gameObject);
-            //Debug.Log($"At {this.GetInstanceID()}, {hits}");
             var pos = transform.position;
             Destroy(this.gameObject);
             DrawPowerUp(pos);
-
-            GameManager.Instance.AddScore();
-            BrickManager.Instance.CheckBricksOnScene();
 
         }
     }
@@ -94,13 +98,9 @@ public class BrickScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ball")
         {
+            Debug.Log("Ball touched");
             TakeDamage();
         }
-    }
-
-    private void OnEnable()
-    {
-        BrickManager.Instance.AddToBricksList(this.gameObject);
     }
 
 }

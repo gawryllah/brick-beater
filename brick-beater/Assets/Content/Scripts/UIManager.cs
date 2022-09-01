@@ -27,8 +27,6 @@ public class UIManager : MonoBehaviour, IUIHandler
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text levelText;
 
-    [SerializeField] private GameObject allGO;
-
     public delegate void UIEvent();
     public UIEvent CountdownFinished;
 
@@ -46,13 +44,11 @@ public class UIManager : MonoBehaviour, IUIHandler
 
         DontDestroyOnLoad(instance);
 
-
-        //LevelManager.Instance.LevelLoaded += CountDown;
     }
 
     private void OnEnable()
     {
-        //GameManager.Instance.OnBallSpawned += CountDown;
+
         GameManager.Instance.OnRunOutOHP += ShowGameOver;
 
         BallController.BallSpawned += CountDown;
@@ -60,7 +56,6 @@ public class UIManager : MonoBehaviour, IUIHandler
 
     private void OnDisable()
     {
-        //GameManager.Instance.OnBallSpawned -= CountDown;
         GameManager.Instance.OnRunOutOHP -= ShowGameOver;
 
         BallController.BallSpawned -= CountDown;
@@ -83,10 +78,11 @@ public class UIManager : MonoBehaviour, IUIHandler
 
     public void QuitToMenu()
     {
-        allGO.SetActive(false);
         SceneManager.LoadScene("MainMenu");
         TurnOffUI();
         GameManager.Instance.ClosePauseMenu();
+        DeleteAll();
+
 
     }
 
@@ -134,7 +130,6 @@ public class UIManager : MonoBehaviour, IUIHandler
 
     void CountDown()
     {
-        allGO.SetActive(true);
         StartCoroutine(CountDownText(cdValue));
     }
 
@@ -155,8 +150,16 @@ public class UIManager : MonoBehaviour, IUIHandler
     void ShowGameOver()
     {
         gameOverText.text = scoreText.text;
-        //UpdateUI();
+        UpdateUI();
         gameOverView.SetActive(true);
+    }
+
+    public void DeleteAll()
+    {
+        foreach (GameObject o in Object.FindObjectsOfType<GameObject>())
+        {
+            Destroy(o);
+        }
     }
 
 

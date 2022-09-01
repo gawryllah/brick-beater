@@ -54,15 +54,13 @@ public class GameManager : MonoBehaviour, IUIHandler
 
     private void OnDisable()
     {
-        BallController.TouchedGround -= LoseHealth;
-
         BrickManager.Instance.OnSpawnedBricks -= StartGame;
+        BallController.TouchedGround -= LoseHealth;
     }
 
 
     private void Start()
     {
-        StartGame();
         UIManager.Instance.UpdateUI();
     }
 
@@ -76,13 +74,10 @@ public class GameManager : MonoBehaviour, IUIHandler
 
     void StartGame()
     {
-
         if (ballGO == null)
         {
             ballGO = Instantiate(ballPrefab);
         }
-
-        //OnBallSpawned?.Invoke();
         ResumeGame();
     }
 

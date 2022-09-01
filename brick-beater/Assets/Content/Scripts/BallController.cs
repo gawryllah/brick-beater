@@ -38,7 +38,6 @@ public class BallController : MonoBehaviour
 
     private void OnEnable()
     {
-
         rb = GetComponent<Rigidbody2D>();
         BallSpawned?.Invoke();
 
