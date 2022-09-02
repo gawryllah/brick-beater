@@ -2,6 +2,8 @@
 
 Game inspired by Arkanoid.
 
+Can play at [itch.io](https://gawryllah.itch.io/brick-beater).
+
 Assets used (might some be not in-game included):
 
 - https://opengameart.org/content/breakout-set
