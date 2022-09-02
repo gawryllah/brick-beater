@@ -40,6 +40,7 @@ public class MainMenuManager : MonoBehaviour
         {
             hiScoreText.text = $"HiScore: {PlayerPrefs.GetInt("BB-HiScore")}";
         }
+        Time.timeScale = 1f;
     }
 
     private void OnEnable()

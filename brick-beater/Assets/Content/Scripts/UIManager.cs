@@ -135,6 +135,7 @@ public class UIManager : MonoBehaviour, IUIHandler
 
     private IEnumerator CountDownText(int value)
     {
+        UpdateUI();
         cdGo.SetActive(true);
         for (int i = value; i > 0; i--)
         {
@@ -142,8 +143,6 @@ public class UIManager : MonoBehaviour, IUIHandler
             yield return new WaitForSecondsRealtime(1);
         }
         cdGo.SetActive(false);
-
-        UpdateUI();
         CountdownFinished?.Invoke();
     }
 

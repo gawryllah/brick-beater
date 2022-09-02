@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class SoundManager : MonoBehaviour
 {
@@ -33,5 +30,5 @@ public class SoundManager : MonoBehaviour
         audioSource.loop = true;
     }
 
-    
+
 }

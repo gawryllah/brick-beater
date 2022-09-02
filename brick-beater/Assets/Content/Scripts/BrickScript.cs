@@ -9,11 +9,14 @@ public class BrickScript : MonoBehaviour
     private SpriteRenderer sr;
     [SerializeField] private int hits; public int Hits { get { return hits; } }
 
-    private AudioSource ac;
+    [SerializeField] private GameObject particle;
+
+    Vector3 pos;
 
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+
         canRespPowerup = true;
         isCooldownStarted = false;
 
@@ -22,14 +25,12 @@ public class BrickScript : MonoBehaviour
     private void OnEnable()
     {
         BrickManager.Instance.AddToBricksList(gameObject);
-        ac = GetComponent<AudioSource>();
-        ac.playOnAwake = false;
-        ac.loop = false;
-       
+        pos = transform.position;
     }
 
     private void OnDestroy()
     {
+        Instantiate(particle, pos, Quaternion.identity);
         GameManager.Instance.AddScore();
         BrickManager.Instance.CheckBricksOnScene();
     }
@@ -68,9 +69,8 @@ public class BrickScript : MonoBehaviour
         {
             BrickManager.Instance.DeleteBrickFromList(gameObject);
             var pos = transform.position;
-            Destroy(gameObject);
             DrawPowerUp(pos);
-
+            Destroy(gameObject);
         }
     }
 
@@ -80,7 +80,7 @@ public class BrickScript : MonoBehaviour
         {
             if (Random.Range(0f, 1f) < 0.5f)
             {
-                ac.Play();
+
                 Instantiate(GameManager.Instance.PowerUpsList[Random.Range(0, GameManager.Instance.PowerUpsList.Count)], pos, Quaternion.identity);
                 canRespPowerup = false;
                 isCooldownStarted = true;

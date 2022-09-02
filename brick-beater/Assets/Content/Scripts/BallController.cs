@@ -29,7 +29,7 @@ public class BallController : MonoBehaviour
 
 
         startPosition = transform.position;
-        minSpeed = 65f;
+        minSpeed = 120f;
         maxSpeed = 200f;
 
 

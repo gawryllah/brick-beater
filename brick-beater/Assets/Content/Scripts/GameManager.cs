@@ -113,9 +113,10 @@ public class GameManager : MonoBehaviour, IUIHandler, IDataPersistence
 
     public void RestartBall()
     {
+        UIManager.Instance.UpdateUI();
         PauseGame();
         GameOn = false;
-        if(ballGO.GetComponent<BallController>() != null)
+        if (ballGO.GetComponent<BallController>() != null)
             ballGO.GetComponent<BallController>().RestartBall();
     }
 

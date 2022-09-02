@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hits: 0
+  particle: {fileID: 1933371469957861253, guid: 99c2b9539d45cbe4bba1f7ba0354a8eb, type: 3}
 --- !u!82 &1526712910267497041
 AudioSource:
   m_ObjectHideFlags: 0

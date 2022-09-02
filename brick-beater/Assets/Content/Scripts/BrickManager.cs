@@ -215,7 +215,7 @@ public class BrickManager : MonoBehaviour, IDataPersistence
     public void CheckBricksOnScene()
     {
         if (bricksList.Count == 0)
-        {
+        {;
             GameManager.Instance.RestartBall();
             LevelManager.Instance.LevelUp();
 
